@@ -1,13 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Absensi</title>
-    <link rel="stylesheet" href="../css/index.css">
-</head>
-<body>
-    
+    <link rel="stylesheet" href="../css/index.css" />
+    <link
+      rel="stylesheet"
+      href="../node_modules/bootstrap/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="../node_modules/bootstrap-icons/font/bootstrap-icons.css"
+    />
+  </head>
+
+  <body>
+    <!-- Ini Navbar -->
+    <nav class="navbar navbar-dark fixed-top">
+      <div class="container-fluid">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvasDarkNavbar"
+          aria-controls="offcanvasDarkNavbar"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- Absensi Fitur -->
+        <a
+          class="navbar-brand position-absolute start-50 translate-middle-x d-flex align-items-center"
+          href="#"
+        >
+          <img
+            class="user d-inline-block align-text-top"
+            width="30"
+            height="30"
+            src="./icon/user.svg"
+          />
+          <span class="spane" id="span">Absensi</span>
+        </a>
+
+        <!-- Logo -->
+        <a class="navbar-brand ms-auto d-flex align-items-end" href="#">
+          <img
+            class="d-inline-block align-text-top"
+            id="Icon"
+            width="40"
+            height="40"
+            src="./img/logo.jpg"
+            alt="Logo Perusahaan"
+          />
+        </a>
+
+        <div
+          class="offcanvas offcanvas-start text-bg-dark"
+          tabindex="-1"
+          id="offcanvasDarkNavbar"
+          aria-labelledby="offcanvasDarkNavbarLabel"
+        >
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Menu</h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="offcanvas"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="offcanvas-body">
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#"
+                  >About</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#"
+                  >Contact</a
+                >
+              </li>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Follow Me!
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark">
+                  <li><a class="dropdown-item" href="#">Instagram</a></li>
+                  <li><a class="dropdown-item" href="#">Facebook</a></li>
+                  <li><a class="dropdown-item" href="#">Telegram</a></li>
+                  <li><a class="dropdown-item" href="#">Whatsapp</a></li>
+                  <li>
+                    <hr class="dropdown-divider" />
+                  </li>
+                  <li><a class="dropdown-item" href="#">Close</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <!-- end Navbar -->
+
+    <!-- content -->
+    <div class="container1 mt-5 pt-5"></div>
+    <!-- end content -->
+
+    <!-- Card Menu -->
+    <div class="desain container-md position-relative">
+      <div class="row justify-content-center">
+        <div class="col-12">
+          <div class="card custom-card">
+            <div class="card-body text-strat">
+              <h5 class="card-title" id="welcome">Selamat Siang</h5>
+              <h3 class="card-title" id="nama">Agus Adi Purnomo</h3>
+              <br />
+              <hr />
+              <div class="row mt-4" id="data">
+                <div class="col-6 col-md-3" id="data1">
+                  <img class="kamera" src="./icon/kamera.png" />
+                  <p class="absen">Absensi</p>
+                </div>
+                <div class="col-6 col-md-3" id="data2">
+                  <img class="kamera" src="./icon/128.png" />
+                  <p class="izin">Ket Izin</p>
+                </div>
+                <div class="col-6 col-md-3" id="data3">
+                  <img class="kamera" src="./icon/Rekap.png" />
+                  <p class="rekap">Rekap Absen</p>
+                </div>
+                <div class="col-6 col-md-3" id="data4">
+                  <img class="kamera" src="./icon/pulang.png" />
+                  <p class="pulang">Pulang</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Card Menu -->
+
+    <!-- kehadiran -->
+    <div class="desain2 container-md position-relative">
+      <div class="row justify-content-center">
+        <div class="col-12">
+          <div class="card custom-card2">
+            <div class="card-body">
+              <div
+                class="row mt-4 justify-content-center text-white text-center"
+                id="rekap"
+              >
+                <div
+                  class="col-4 d-flex align-items-start justify-content-center"
+                >
+                  <h4>Tanggal</h4>
+                </div>
+                <div
+                  class="col-4 d-flex align-items-start justify-content-center"
+                >
+                  <h4>Tanggal</h4>
+                </div>
+                <div
+                  class="col-4 d-flex align-items-start justify-content-center"
+                >
+                  <h4>Tanggal</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end kehadiran -->
+
+    <!-- footer -->
+    <footer class="footer mt-5">
+      <div class="container text-white text-center py-4">
+        <p>&copy; 2025 Semua Hak Dilindungi ;c</p>
+        <div class="social-icons">
+          <a href="#" class="me-3"
+            ><img src="./media/facebook-brands-solid.svg" alt="Facebook" width="24"
+          /></a>
+          <a href="#" class="me-3"
+            ><img src="./media/instagram-brands-solid.svg" alt="instagram" width="24"
+          /></a>
+          <a href="#" class="me-3"
+            ><img src="./media/whatsapp-brands-solid.svg" alt="Whatsapp" width="24"
+          /></a>
+          <a href="#" class="me-3"
+            ><img src="./media/github.png" alt="instagram" width="24"
+          /></a>
+        </div>
+      </div>
+    </footer>
+    <!-- end -->
+
     <script src="../js/new.js"></script>
-</body>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
 </html>
