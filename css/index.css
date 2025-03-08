@@ -77,6 +77,13 @@ hr {
   -moz-box-shadow: -10px 12px 0px -6px rgba(0, 0, 0, 0.11);
 }
 
+.A1:hover,
+.A2:hover,
+.A3:hover,
+.A4:hover {
+  cursor: pointer;
+}
+
 /* 
  
 Samsung gw (412px)
