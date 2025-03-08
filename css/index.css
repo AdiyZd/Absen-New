@@ -566,3 +566,21 @@ oppo (768)
 .footer .social-icons img {
   filter: invert(1); /* Agar ikon yang gelap terlihat di background biru */
 }
+
+.h1 {
+  font-weight: bold !important;
+  opacity: 85%;
+}
+
+.h2 {
+  font-weight: bold !important;
+  opacity: 85%;
+}
+.h3 {
+  font-weight: bold !important;
+  opacity: 85%;
+}
+.h4 {
+  font-weight: bold !important;
+  opacity: 85%;
+}
