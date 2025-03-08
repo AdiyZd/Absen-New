@@ -1,3 +1,3 @@
 ### Absen-New
 
-# [📄 Dokumentasi Lengkap](https://adiyzd.github.io/Selfie/src/index.html)
+# [📄 Dokumentasi Lengkap](https://adiyzd.github.io/Absen-New/src/)
