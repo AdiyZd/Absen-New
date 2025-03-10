@@ -25,150 +25,146 @@ document.addEventListener("DOMContentLoaded", function () {
   let { hari, tanggal, bulan, tahun } = tanggalWaktu();
 
   if (tes) {
-    async function LokasiSaya() {
-      tes.addEventListener("click", async function (enev) {
-        enev.preventDefault(); // hilangkan a sebagai link default 
-        try {
-          const LokasiDiIzinkan = LokasiSaya();
+    tes.addEventListener("click", async function (enev) {
+      enev.preventDefault(); // Menghilangkan fungsi default pada tombol/link
 
-        } catch (error) {
+      try {
+        const dalamLokasi = await LokasiSaya();
+
+        if (dalamLokasi) {
           Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: `Terjadi kesalahan pada: ${error.message}`
+            title: "Menyiapkan Halaman Absensi",
+            text: "Mohon tunggu sebentar",
+            imageUrl: "./img/load-pag.gif",
+            imageWidth: 150,
+            imageHeight: 150,
+            allowOutsideClick: false,
+            didOpen: () => Swal.showLoading(),
+            timer: 5000,
+            timerProgressBar: true,
+            willClose: () => {
+              window.location.href = "absen.html";
+            },
           });
         }
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: `Terjadi kesalahan pada: ${error.message}`,
+        });
+      }
+    });
 
-        async function LokasiSaya() {
-          return new Promise((resolve, reject) => {
-            if ("geolocation" in navigator) {
-              Swal.fire({
-                imageUrl: "./img/location.gif",
-                imageWidth: 150,
-                imageHeight: 150,
-                title: "Memeriksa Lokasi Anda",
-                text: "Mohon tunggu sebentar",
-                allowOutsideClick: false,
-                didOpen: () => {
-                  Swal.showLoading();
-                }
-              });
-              
-              navigator.geolocation.getCurrentPosition(
-                async function (posisi) {
-                  let lokasiValid = await posisiAnda(posisi);
-                  resolve(lokasiValid);
-                },
+    async function LokasiSaya() {
+      return new Promise((resolve, reject) => {
+        if ("geolocation" in navigator) {
+          Swal.fire({
+            imageUrl: "./img/location.gif",
+            imageWidth: 150,
+            imageHeight: 150,
+            title: "Memeriksa Lokasi Anda",
+            text: "Mohon tunggu sebentar",
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading();
+            },
+          });
 
-                function (error) {
-                  let errorMessage;
-
-                  switch (error.code) {
-                    // belum melakuan perizinan lokasi di hp
-                    case error.PERMISSION_DENIED:
-                      Swal.fire({
-                        title: "Lokasi Anda Tidak Dapat Ditemukan",
-                        text: "Silahkan izinkan lokasi Anda!",
-                        imageUrl: "./img/no-location.png",
-                        imageWidth: 150,
-                        imageHeight: 150
-                      });
-                      break;
-
-                    // Lokasi Tidak Ditemukan Web Tidak Dapat Mengakses Lokasi
-                    case error.POSITION_UNAVAILABLE:
-                      Swal.fire({
-                        title: "Lokasi Tidak Dapat Ditemukan",
-                        text: "Mohon izinkan lokasi pada chrome",
-                        imageUrl: "./img/emigration.png",
-                        imageWidth: 150,
-                        imageHeight: 150
-                      });
-                      break;
-
-                    // kondisi koneksi terganggu atau lemot
-                    case error.TIMEOUT:
-                      Swal.fire({
-                        title: "Koneksi Internet Anda Tidak Stabil",
-                        text: "Mohon coba lagi",
-                        imageUrl: "./img/no-wifi.png",
-                        imageWidth: 150,
-                        imageHeight: 150
-                      });
-                      break;
-
-                    // default user
-                    default:
-                      Swal.fire({
-                        icon: "warning",
-                        title: "Terjadi Kesalahan",
-                        text: "Mohon coba lagi"
-                      });
-                  }
+          navigator.geolocation.getCurrentPosition(
+            async function (posisi) {
+              let lokasiValid = posisiAnda(posisi);
+              resolve(lokasiValid);
+            },
+            function (error) {
+              let errorMessage = "Terjadi kesalahan saat mengambil lokasi.";
+              switch (error.code) {
+                case error.PERMISSION_DENIED:
+                  errorMessage = "Silahkan izinkan lokasi Anda!";
                   Swal.fire({
-                    title: "Terjadi Kesalahan Lokasi!",
+                    title: "Lokasi Tidak Dapat Ditemukan",
                     text: errorMessage,
-                    icon: "error"
+                    imageUrl: "./img/no-location.png",
+                    imageWidth: 150,
+                    imageHeight: 150,
                   });
-
-                  reject(false);
-                }
-            );
+                  break;
+                case error.POSITION_UNAVAILABLE:
+                  errorMessage = "Mohon izinkan lokasi pada browser.";
+                  Swal.fire({
+                    title: "Lokasi Tidak Dapat Ditemukan",
+                    text: errorMessage,
+                    imageUrl: "./img/emigration.png",
+                    imageWidth: 150,
+                    imageHeight: 150,
+                  });
+                  break;
+                case error.TIMEOUT:
+                  errorMessage = "Mohon coba lagi, koneksi tidak stabil.";
+                  Swal.fire({
+                    title: "Koneksi Internet Tidak Stabil",
+                    text: errorMessage,
+                    imageUrl: "./img/no-wifi.png",
+                    imageWidth: 150,
+                    imageHeight: 150,
+                  });
+                  break;
+                default:
+                  Swal.fire({
+                    icon: "warning",
+                    title: "Terjadi Kesalahan",
+                    text: "Mohon coba lagi",
+                  });
+              }
+              reject(false);
+            }
+          );
         } else {
-            swal.fire({
-                title: "Broser belum mendukung geolocation",
-                text: "Silahkan gunakan browser lain",
-                icon: "warning"
-            })     
-            
-            reject(false);
-        }
+          Swal.fire({
+            title: "Browser Tidak Mendukung Geolocation",
+            text: "Silahkan gunakan browser lain",
+            icon: "warning",
           });
+          reject(false);
         }
       });
     }
 
-    async function posisiAnda(posisi) {
-        let lok1 = posisi.coords.latitude,
-            lok2 = posisi.coords.longitude;
+    function posisiAnda(posisi) {
+      let lok1 = posisi.coords.latitude;
+      let lok2 = posisi.coords.longitude;
 
-        let BatasLokasiAccess = [
-            { lat: -6.970946, lng: 110.018758 }, // Lokasi 1 Yang Di Izinkan
-            { lat: -6.970872, lng: 110.018765 }, // Lokasi 2 Yang Di Izinkan
-            { lat: -6.97086, lng: 110.018706 }, // Lokasi 3 Yang Di Izinkan
-            { lat: -6.970945, lng: 110.018698 } // Lokasi 4 Yang Di Izinkan
-        ]
+      let BatasLokasiAccess = [
+        { lat: -6.970946, lng: 110.018758 },
+        { lat: -6.970872, lng: 110.018765 },
+        { lat: -6.97086, lng: 110.018706 },
+        { lat: -6.970945, lng: 110.018698 },
+      ];
 
-        let maxRadius = 20; // memeriksa radius dalam jarak 20meter
-        let DalamLokasi = BatasLokasiAccess.some(
-            (loc) => hitungJarak(lok1, lok2, loc.lat, loc.lng) <= maxRadius
-        );
+      let maxRadius = 20; // Radius dalam meter
+      let DalamLokasi = BatasLokasiAccess.some(
+        (loc) => hitungJarak(lok1, lok2, loc.lat, loc.lng) <= maxRadius
+      );
 
-        Swal.close();
-
-        if (DalamLokasi) {
-            Swal.fire({
-                title: "Menyiapkan Halaman Absensi",
-                text: "Mohon tunggu sebentar",
-                imageUrl: "./img/load-pag.gif",
-                imageWidth: 150,
-                imageHeight: 150,
-                allowOutsideClick: false,
-                didOpen: () => Swal.showLoading(),
-                timer: 5000,
-                timerProgressBar: true,
-                willClose: () => {
-                    window.location.href = "absen.html";
-                }
-            });
-
-            // setTimeout(() => {
-            //     window.location.href = "absen.html";
-            // }, 5000);
-
-        }
+      Swal.close();
+      return DalamLokasi; // Mengembalikan hasil validasi lokasi
     }
-    LokasiSaya();
+
+    function hitungJarak(lat1, lon1, lat2, lon2) {
+      const RB = 6371000; // Radius Bumi dalam meter
+      const dLat = ((lat2 - lat1) * Math.PI) / 180;
+      const dLon = ((lon2 - lon1) * Math.PI) / 180;
+
+      const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos((lat1 * Math.PI) / 180) *
+          Math.cos((lat2 * Math.PI) / 180) *
+          Math.sin(dLon / 2) *
+          Math.sin(dLon / 2);
+
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      return RB * c; // Mengembalikan jarak dalam meter
+    }
   }
 
   if (tes2) {
@@ -186,17 +182,17 @@ document.addEventListener("DOMContentLoaded", function () {
         },
       });
 
-    // Swal.fire({
-    //     title: "Menyiapkan Halaman Absensi",
-    //     text: "Mohon tunggu sebentar",
-    //     imageUrl: "./img/load-pag.gif",
-    //     imageWidth: 150,
-    //     imageHeight: 150,
-    //     allowOutsideClick: false,
-    //     didOpen: () => Swal.showLoading(),
-    //     timer: 5000,
-    //     timerProgressBar: true
-    // });
+      // Swal.fire({
+      //     title: "Menyiapkan Halaman Absensi",
+      //     text: "Mohon tunggu sebentar",
+      //     imageUrl: "./img/load-pag.gif",
+      //     imageWidth: 150,
+      //     imageHeight: 150,
+      //     allowOutsideClick: false,
+      //     didOpen: () => Swal.showLoading(),
+      //     timer: 5000,
+      //     timerProgressBar: true
+      // });
     });
   }
 
@@ -229,5 +225,3 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
-
-//
