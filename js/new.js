@@ -29,19 +29,30 @@ document.addEventListener("DOMContentLoaded", function() {
         async function LokasiSaya() {
             tes.addEventListener("click", async function(enev) {
                 enev.preventDefault();
-                // Swal.fire({
-                //     icon: "question",
-                //     title: `hari: ${hari} \n tanggal: ${tanggal} \n bulan: ${bulan} \n tahun: ${tahun}`
-                // })
+                Swal.fire({
+                    imageUrl: "./img/tl.jpg",
+                    title: "Diluar Jangkauan",
+                    text: "Diluar Lokasi SandiKomputer",
+                    imageHeight: 150,
+                    imageWidth: 150
+                    // title: `hari: ${hari} \n tanggal: ${tanggal} \n bulan: ${bulan} \n tahun: ${tahun}`
+                })
                 
-                try {
+                // try {
+                //     const LokasiDiIzinkan = LokasiSaya();
                     
+                //     if (LokasiDiIzinkan) {
+                //         await StartCamera();
+                //     } else {
+                //         Swal.fire({
+                //             imageUrl: "",
+                //             title: "Diluar Lokasi Sandikomputer",
+                //         })
+                //     }
                     
+                // } catch (error) {
 
-
-                } catch (error) {
-
-                }
+                // }
 
             })
         }
