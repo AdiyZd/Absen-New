@@ -87,17 +87,20 @@
             <h3 class="card-title" id="nama">Agus Adi Purnomo</h3>
             <br />
             <hr />
-            <!-- taro vidio disini -->
+            <!-- taro video disini -->
             <div class="row mt-4 justify-content-center">
-              <div class="col-12 d-flex justify-content-center align-items-center">
-                <button id="absenBtn" class="btn btn-primary mx-auto">Mulai Absensi</button>
+              <div class="col-12 d-flex flex-column align-items-center">
+                <button id="absenBtn" class="btn btn-primary">Mulai Absensi</button>
 
-                <!-- Preview Kamera -->
-                <div class="priviu">
-                  <video id="stream" width="320" height="240" autoplay></video>
-
-                  <!-- <button></button> -->
+                <!-- Wrapper untuk Preview Kamera -->
+                <div class="priviu d-flex flex-column justify-content-center align-items-center mt-3"
+                  style="min-height: 260px;">
+                  <video id="stream" width="320" height="240" autoplay style="display: none;"></video>
+                  <canvas id="priviu" width="320" height="240" style="display: none;"></canvas>
                 </div>
+
+                <!-- Tombol Ambil Foto -->
+                <button id="ambilFoto" class="btn btn-outline-primary mt-3">📷  Ambil Foto</button>
               </div>
             </div>
           </div>
@@ -105,6 +108,7 @@
       </div>
     </div>
   </div>
+
   <!-- End Card Menu -->
 
   <!-- footer -->

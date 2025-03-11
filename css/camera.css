@@ -7,3 +7,13 @@
 #stream {
     transform: scaleX(-1);
 }
+
+#ambilFoto {
+    display: none;
+    font-weight: 700;
+    color: black !important;
+}
+
+#ambilFoto:hover {
+    color: white !important;
+}

@@ -1,0 +1,5 @@
+/* 
+
+    NEXT PENGIRIMAN FOTO KE TELE
+
+*/
