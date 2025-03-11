@@ -42,11 +42,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
   //   ambil foto
   foto.addEventListener("click", function () {
-    priviu.width = videoStream.videoWidth;
-    priviu.height = videoStream.videoHeight;
+
+    if (!videoStream.srcObject) {
+        console.log("Kamera belum aktif")
+        return;
+    }
+
+    // ukuran foto
+    priviu.width = 320;
+    priviu.height = 240;
 
     // frem vidio
-    context.drawImage(videoStream, 0, 0, priviu.width, priviu.height);
+    context.drawImage(videoStream, 0, 0, 320, 240);
 
     // matikan kamera biyar vidio mati dan tampilan normal lagi
     if (mati) {
