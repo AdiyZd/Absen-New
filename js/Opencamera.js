@@ -5,9 +5,9 @@ document.addEventListener("DOMContentLoaded", function () {
     absenBtn.addEventListener("click", function () {
         videoStream.style.display = "block";
 
+        absenBtn.style.display = "none";
         navigator.mediaDevices.getUserMedia({ video: true })
             .then((streamKamera) => {
-                absenBtn.style.display = "none";
                 videoStream.srcObject = streamKamera;
                 videoStream.play();
 

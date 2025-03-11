@@ -154,7 +154,7 @@ document.addEventListener("DOMContentLoaded", function () {
         (loc) => hitungJarak(lok1, lok2, loc.lat, loc.lng) <= maxRadius
       );
 
-      // console.log(`Apakah dalam area ynmnmnmnmnmnmnmnmnmnmnmnmnmnmnmnang di izinkan: ${DalamLokasi}`);
+      // console.log(`Apakah dalam area yang di izinkan: ${DalamLokasi}`);
       Swal.close();
       return DalamLokasi; // Mengembalikan hasil validasi lokasi
     }
