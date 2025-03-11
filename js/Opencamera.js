@@ -1,23 +1,27 @@
-function absen() {
-    const vidioStream = document.getElementById('stream');
+document.addEventListener("DOMContentLoaded", function () {
+    const absenBtn = document.getElementById("absenBtn");
+    const videoStream = document.getElementById("stream");
 
-    // hapus display none agar bisa tampil
-    vidioStream.style.display = 'block';
-    
-    // strat kamera
-    navigator.mediaDevices.getUserMedia({ video: true })
-        .then((streamKamera) => {
-            vidioStream.srcObject = streamKamera;
-            vidioStream.play();
-        })
-        .catch((error) => {
-            console.log('Acess Kamera ditolak: ', error);
-            Swal.fire({
-                icon: "error",
-                title: "Akses Kamera ditolak",
-                text: "Mohon izinkan akses kamera untuk melakukan absen",
-                draggable: true
+    absenBtn.addEventListener("click", function () {
+        videoStream.style.display = "block";
+
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then((streamKamera) => {
+                videoStream.srcObject = streamKamera;
+                videoStream.play();
+
+                // Disable tombol setelah kamera aktif
+                absenBtn.disabled = true;
+                absenBtn.innerText = "Kamera Aktif";
             })
-
-        })
-}
+            .catch((error) => {
+                console.error("Akses Kamera Ditolak: ", error);
+                Swal.fire({
+                    icon: "error",
+                    title: "Akses Kamera Ditolak",
+                    text: "Mohon izinkan akses kamera untuk melakukan absen",
+                    draggable: true
+                });
+            });
+    });
+});

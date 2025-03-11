@@ -7,6 +7,7 @@
   <title>Absensi</title>
   <link rel="icon" href="./icon/absen.png" />
   <link rel="stylesheet" href="../css/absensi.css" />
+  <link rel="stylesheet" href="../css/camera.css" />
   <link rel="stylesheet" href="./bootstrap/dist/css/bootstrap.min.css" />
   <link rel="stylesheet" href="../node_modules/bootstrap-icons/font/bootstrap-icons.css" />
 </head>
@@ -81,21 +82,20 @@
     <div class="row justify-content-center">
       <div class="col-12">
         <div class="card custom-card">
-          <div class="card-body text-center"> 
+          <div class="card-body text-center">
             <h5 class="card-title" id="welcome">Selamat Siang</h5>
             <h3 class="card-title" id="nama">Agus Adi Purnomo</h3>
             <br />
             <hr />
             <!-- taro vidio disini -->
-            <div class="row mt-4 justify-content-center"> 
+            <div class="row mt-4 justify-content-center">
               <div class="col-12 d-flex justify-content-center align-items-center">
-                <button class="btn btn-primary mx-auto" onclick="startAbsensi()">Mulai Absensi</button>
+                <button id="absenBtn" class="btn btn-primary mx-auto">Mulai Absensi</button>
 
-                <!-- previu foto -->
+                <!-- Preview Kamera -->
                 <div class="priviu">
-                  <video id="strem" width="320" height="240" autoplay style="border: 2px solid rgb(24, 24, 134); display: none;"></video>
+                  <video id="stream" width="320" height="240" autoplay></video>
                 </div>
-
               </div>
             </div>
           </div>
