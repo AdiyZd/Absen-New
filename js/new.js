@@ -31,22 +31,22 @@ document.addEventListener("DOMContentLoaded", function () {
       try {
         const dalamLokasi = await LokasiSaya();
 
-        if (dalamLokasi) {
-          Swal.fire({
-            title: "Menyiapkan Halaman Absensi",
-            text: "Mohon tunggu sebentar",
-            imageUrl: "./img/load-pag.gif",
-            imageWidth: 150,
-            imageHeight: 150,
-            allowOutsideClick: false,
-            didOpen: () => Swal.showLoading(),
-            timer: 5000,
-            timerProgressBar: true,
-            willClose: () => {
-              window.location.href = "absen.html";
-            },
-          });
-        }
+        // if (dalamLokasi) {
+        //   Swal.fire({
+        //     title: "Menyiapkan Halaman Absensi",
+        //     text: "Mohon tunggu sebentar",
+        //     imageUrl: "./img/load-pag.gif",
+        //     imageWidth: 150,
+        //     imageHeight: 150,
+        //     allowOutsideClick: false,
+        //     didOpen: () => Swal.showLoading(),
+        //     timer: 5000,
+        //     timerProgressBar: true,
+        //     willClose: () => {
+        //       window.location.href = "absen.html";
+        //     },
+        //   });
+        // }
       } catch (error) {
         Swal.fire({
           icon: "error",
