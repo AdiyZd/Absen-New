@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         navigator.mediaDevices.getUserMedia({ video: true })
             .then((streamKamera) => {
+                absenBtn.style.display = "none";
                 videoStream.srcObject = streamKamera;
                 videoStream.play();
 
@@ -16,6 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .catch((error) => {
                 console.error("Akses Kamera Ditolak: ", error);
+                videoStream.style.display = "none";
                 Swal.fire({
                     icon: "error",
                     title: "Akses Kamera Ditolak",
