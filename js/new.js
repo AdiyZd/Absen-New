@@ -184,17 +184,10 @@ document.addEventListener("DOMContentLoaded", function () {
     tes2.addEventListener("click", function (event) {
       event.preventDefault();
       Swal.fire({
-        imageUrl: "./img/location.gif",
-        imageWidth: 150,
-        imageHeight: 150,
-        title: "Memeriksa Lokasi Anda",
-        text: "Mohon tunggu sebentar",
-        allowOutsideClick: false,
-        didOpen: () => {
-          Swal.showLoading();
-        },
+        title: "Done Click!",
+        icon: "success",
+        draggable: true,
       });
-
       // Swal.fire({
       //     title: "Menyiapkan Halaman Absensi",
       //     text: "Mohon tunggu sebentar",
