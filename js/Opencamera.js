@@ -40,8 +40,8 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   });
 
-//   ambil foto
-  foto.addEventListener("click", function() {
+  //   ambil foto
+  foto.addEventListener("click", function () {
     priviu.width = videoStream.videoWidth;
     priviu.height = videoStream.videoHeight;
 
@@ -50,16 +50,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // matikan kamera biyar vidio mati dan tampilan normal lagi
     if (mati) {
-        let cekCamera = mati.getTracks();
-        cekCamera.forEach((track) => cekCamera.stop()); // stok kamera
-        videoStream.srcObject = null;
+      let cekCamera = mati.getTracks();
+      cekCamera.forEach((track) => track.stop()); // stok kamera
+      videoStream.srcObject = null;
     }
-    
+
     // matikan vidio dan tombol ambil foto
     videoStream.style.display = "none";
     foto.style.display = "none";
 
     priviu.style.display = "block";
+
+    Swal.fire({
+      icon: "success",
+      title: "✔️ Foto Berhasil Diambil",
+      text: "Gambar telah disimpan di tampilan.",
+      timer: 2000,
+      showConfirmButton: false,
+    });
   });
 });
-
