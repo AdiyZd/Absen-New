@@ -7,7 +7,7 @@
 #stream {
     transform: scaleX(-1);
 }
-
+#priviu,
 #ambilFoto {
     display: none;
     font-weight: 700;
