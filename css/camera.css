@@ -1,7 +1,9 @@
-.priviu video {
+.priviu video .priviu canvas{
     border: 2px solid rgb(24, 24, 134);
     border-radius: 20px;
     display: none;
+    width: 320px;
+    height: 240px;
 }
 
 #stream {
@@ -12,6 +14,8 @@
     display: none;
     font-weight: 700;
     color: black !important;
+    width: 320px;
+    height: 240px;
 }
 
 #ambilFoto:hover {
