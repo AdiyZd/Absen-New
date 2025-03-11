@@ -29,24 +29,30 @@ document.addEventListener("DOMContentLoaded", function () {
       enev.preventDefault(); // Menghilangkan fungsi default pada tombol/link
 
       try {
-        const dalamLokasi = await LokasiSaya();
+        let dalamLokasi = await LokasiSaya();
 
-        // if (dalamLokasi) {
-        //   Swal.fire({
-        //     title: "Menyiapkan Halaman Absensi",
-        //     text: "Mohon tunggu sebentar",
-        //     imageUrl: "./img/load-pag.gif",
-        //     imageWidth: 150,
-        //     imageHeight: 150,
-        //     allowOutsideClick: false,
-        //     didOpen: () => Swal.showLoading(),
-        //     timer: 5000,
-        //     timerProgressBar: true,
-        //     willClose: () => {
-        //       window.location.href = "absen.html";
-        //     },
-        //   });
-        // }
+        if (dalamLokasi) {
+          Swal.fire({
+            title: "Menyiapkan Halaman Absensi",
+            text: "Mohon tunggu sebentar",
+            imageUrl: "./img/load-pag.gif",
+            imageWidth: 150,
+            imageHeight: 150,
+            allowOutsideClick: false,
+            didOpen: () => Swal.showLoading(),
+            timer: 5000,
+            timerProgressBar: true,
+          }).then(() => {
+            window.location.href = "absen.html"; // tunggu hingga alret selesai
+          });
+        } else {
+          Swal.fire({
+            icon: "warning",
+            title: "Diluar jangkauan access",
+            draggable: true
+          })
+        }
+
       } catch (error) {
         Swal.fire({
           icon: "error",
@@ -73,7 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
           navigator.geolocation.getCurrentPosition(
             async function (posisi) {
-              let lokasiValid = posisiAnda(posisi);
+              let lokasiValid = await posisiAnda(posisi);
               resolve(lokasiValid);
             },
             function (error) {
@@ -97,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     imageUrl: "./img/emigration.png",
                     imageWidth: 150,
                     imageHeight: 150,
-                  });
+                  }).then(() => reject(false));
                   break;
                 case error.TIMEOUT:
                   errorMessage = "Mohon coba lagi, koneksi tidak stabil.";
@@ -134,6 +140,8 @@ document.addEventListener("DOMContentLoaded", function () {
       let lok1 = posisi.coords.latitude;
       let lok2 = posisi.coords.longitude;
 
+      console.log(`Ko'ordinat User: ${lok1}, ${lok2}`);
+
       let BatasLokasiAccess = [
         { lat: -6.970946, lng: 110.018758 },
         { lat: -6.970872, lng: 110.018765 },
@@ -146,6 +154,7 @@ document.addEventListener("DOMContentLoaded", function () {
         (loc) => hitungJarak(lok1, lok2, loc.lat, loc.lng) <= maxRadius
       );
 
+      // console.log(`Apakah dalam area ynmnmnmnmnmnmnmnmnmnmnmnmnmnmnmnang di izinkan: ${DalamLokasi}`);
       Swal.close();
       return DalamLokasi; // Mengembalikan hasil validasi lokasi
     }
@@ -161,9 +170,13 @@ document.addEventListener("DOMContentLoaded", function () {
           Math.cos((lat2 * Math.PI) / 180) *
           Math.sin(dLon / 2) *
           Math.sin(dLon / 2);
-
+          
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-      return RB * c; // Mengembalikan jarak dalam meter
+      const jarak = RB * c;
+          
+      // debuging
+      console.log(`Jarak antara (${lat1}, ${lon1}) dan (${lat2}, ${lon2}) adalah ${jarak.toFixed(2)} meter`);
+      return jarak; // Mengembalikan jarak dalam meter
     }
   }
 
