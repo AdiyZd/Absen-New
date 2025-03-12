@@ -263,9 +263,9 @@ oppo (768)
     
     top: -150px !important; /* Pastikan nilai top sesuai */
     width: calc(100% - 20px) !important;
-    min-height: 450px !important;
+    /* min-height: 450px !important; */
 
-    height: 450px !important;
+    height: 500px !important;
 
     /* margin: auto !important; */
 

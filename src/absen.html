@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Absensi</title>
   <link rel="icon" href="./icon/absen.png" />
-  <link rel="stylesheet" href="../css/absensi.css" />
+  <!-- <link rel="stylesheet" href="../css/absensi.css" /> -->
   <link rel="stylesheet" href="../css/camera.css" />
   <link rel="stylesheet" href="./bootstrap/dist/css/bootstrap.min.css" />
   <link rel="stylesheet" href="../node_modules/bootstrap-icons/font/bootstrap-icons.css" />
@@ -89,18 +89,24 @@
             <hr />
             <!-- taro video disini -->
             <div class="row mt-4 justify-content-center">
-              <div class="col-12 d-flex flex-column align-items-center">
+              <div id="containerButton" class="col-12 d-flex flex-column align-items-center">
                 <button id="absenBtn" class="btn btn-primary">Mulai Absensi</button>
 
                 <!-- Wrapper untuk Preview Kamera -->
                 <div class="priviu d-flex flex-column justify-content-center align-items-center mt-3"
                   style="min-height: 260px;">
                   <video id="stream" width="320" height="240" autoplay style="display: none;"></video>
-                  <canvas id="priviu" width="320" height="240" style="display: none;"></canvas>
+                  <canvas id="priviu" class="canvas"></canvas>
                 </div>
 
                 <!-- Tombol Ambil Foto -->
-                <button id="ambilFoto" class="btn btn-outline-primary mt-3">📷  Ambil Foto</button>
+                <button id="ambilFoto" class="btn btn-outline-primary mt-3">📷 Ambil Foto</button>
+                <div class="button-grubping">
+                  <button id="kirim" class="btn btn-outline-primary mt-3">📤 Kirim</button>
+                  <button id="restart" class="btn btn-outline-primary mt-3">
+                    <img src="./icon/undo.png" alt="Ulangi foto" class="image1"> Ulangi Foto
+                  </button>
+                </div>
               </div>
             </div>
           </div>

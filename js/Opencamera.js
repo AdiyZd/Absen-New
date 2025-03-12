@@ -2,6 +2,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const absenBtn = document.getElementById("absenBtn");
     const videoStream = document.getElementById("stream");
     const foto = document.getElementById("ambilFoto");
+    const send = document.getElementById("kirim");
+    const ulangFoto = document.getElementById("restart");
     const priviu = document.getElementById("priviu");
     const context = priviu.getContext("2d");
     let mati = null;
@@ -48,11 +50,14 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // ukuran foto
-        priviu.width = 320;
-        priviu.height = 240;
+        priviu.width = videoStream.videoWidth;
+        priviu.height = videoStream.videoHeight;
 
         // frem vidio
-        context.drawImage(videoStream, 0, 0, 320, 240);
+        context.save();
+        context.scale(-1, 1);
+        context.drawImage(videoStream, -priviu.width, 0, priviu.width, priviu.height);
+        context.restore();
 
         // matikan kamera biyar vidio mati dan tampilan normal lagi
         if (mati) {
@@ -64,6 +69,8 @@ document.addEventListener("DOMContentLoaded", function () {
         // matikan vidio dan tombol ambil foto
         videoStream.style.display = "none";
         foto.style.display = "none";
+        send.style.display = "inline-block";
+        ulangFoto.style.display = "inline-block";
         
         priviu.style.display = "block";
     });
