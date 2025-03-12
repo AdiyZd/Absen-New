@@ -68,7 +68,7 @@ body {
     position: absolute;
     top: -150px;
     z-index: 10 !important;
-    height: 350px !important;
+    height: 39em !important;
   
     border: 2px solid #000 !important;
   
@@ -153,9 +153,18 @@ body {
 
 /* seting media broo */
 
+/* samsung A52 */
 @media screen and (max-width: 421px) {
     .custom-card {
         /* max-height: 350em !important; */
+        height: 38em !important;
+    }
+}
+
+/* VIVIO Y21S DAN OPO A15 DAN OPO A18 */
+
+@media screen and (max-width: 720px) {
+    .custom-card {
         height: 38em !important;
     }
 }
