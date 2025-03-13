@@ -36,7 +36,14 @@ document.addEventListener("DOMContentLoaded", async function () {
         } else {
             waktu = "Selamat Malam";
         }
-        WaktuLoBro.innerText = waktu;
+       
+        console.log(`Waktu Sekarang: ${waktu}`);
+
+        if (WaktuLoBro) {
+            WaktuLoBro.innerText = waktu;
+        } else {
+            console.log("Element tidak ditemukan");
+        }
 
 
         return {
