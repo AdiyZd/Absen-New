@@ -72,6 +72,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         "Agus Adi Purnomo",
         "Choirunn Nisa",
         "Nabila Eka Ayu Saputri",
+        "Lailita Al Hikmah"
     ];
     // minta acces ke admin
 
