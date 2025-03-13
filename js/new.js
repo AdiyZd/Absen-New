@@ -1,29 +1,64 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const tes = document.getElementById("absensiA");
-  const tes2 = document.getElementById("izinA");
-  const tes3 = document.getElementById("rekapA");
-  const tes4 = document.getElementById("pulangA");
+  let tes = document.getElementById("absensiA");
+  let tes2 = document.getElementById("izinA");
+  let tes3 = document.getElementById("rekapA");
+  let tes4 = document.getElementById("pulangA");
+  const welcomeHari = document.getElementById("welcome");
+  const UserName = document.getElementById("nama");
 
   function tanggalWaktu() {
     let now = new Date();
     let hari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+    let jam = new Date().toLocaleString("id-ID", {
+      timeZone: "Asia/Jakarta",
+      hour: "numeric",
+      hour12: false
+    });
+    let menit = now.getMinutes();
+    let detik = now.getSeconds();
     let Nh = hari[now.getDay()];
     let tanggal = now.getDate();
     let bulan = now.toLocaleString("id-ID", { month: "long" });
     let tahun = now.getFullYear();
+
+    let waktu;
+
+    if (jam >= 3 && jam < 10) {
+      waktu = "Selamat Pagi";
+    } else if (jam >= 10 && jam < 15) {
+      waktu = "Selamat Siang";
+    } else if (jam >= 15 && jam < 18) {
+      waktu = "Selamat Sore";
+    } else {
+      waktu = "Selamat Malam"; // pelengkap jam
+    }
+
+    // debuging waktu
+    console.log(`Waktu Sekarang: ${waktu}`);
+
+    if (welcomeHari) {
+      welcomeHari.innerText = waktu;
+    } else {
+      console.log("Element tidak ditemukan");
+    }
+
 
     return {
       hari: hari[now.getDay()],
       tanggal: now.getDate(),
       bulan: now.toLocaleString("id-ID", { month: "long" }),
       tahun: now.getFullYear(),
+      // Mobail: mobailjam,
+      waktu: waktu,
+      jam: jam,
+      menit: menit,
+      Detik: detik
     };
   }
 
-  // menghitun titik lokasi saya berada apakah  di dalam lokasi atau tidak!
+  let { hari, tanggal, bulan, tahun, Detik, menit, jam } = tanggalWaktu();
 
-  let { hari, tanggal, bulan, tahun } = tanggalWaktu();
-
+  // cek lokasi
   if (tes) {
     tes.addEventListener("click", async function (enev) {
       enev.preventDefault(); // Menghilangkan fungsi default pada tombol/link
@@ -167,13 +202,13 @@ document.addEventListener("DOMContentLoaded", function () {
       const a =
         Math.sin(dLat / 2) * Math.sin(dLat / 2) +
         Math.cos((lat1 * Math.PI) / 180) *
-          Math.cos((lat2 * Math.PI) / 180) *
-          Math.sin(dLon / 2) *
-          Math.sin(dLon / 2);
-          
+        Math.cos((lat2 * Math.PI) / 180) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
       const jarak = RB * c;
-          
+
       // debuging
       console.log(`Jarak antara (${lat1}, ${lon1}) dan (${lat2}, ${lon2}) adalah ${jarak.toFixed(2)} meter`);
       return jarak; // Mengembalikan jarak dalam meter
@@ -188,17 +223,6 @@ document.addEventListener("DOMContentLoaded", function () {
         icon: "success",
         draggable: true,
       });
-      // Swal.fire({
-      //     title: "Menyiapkan Halaman Absensi",
-      //     text: "Mohon tunggu sebentar",
-      //     imageUrl: "./img/load-pag.gif",
-      //     imageWidth: 150,
-      //     imageHeight: 150,
-      //     allowOutsideClick: false,
-      //     didOpen: () => Swal.showLoading(),
-      //     timer: 5000,
-      //     timerProgressBar: true
-      // });
     });
   }
 

@@ -15,30 +15,30 @@ document.addEventListener("DOMContentLoaded", async function () {
     function tanggalWaktu() {
         let now = new Date();
         let hari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
-        let jam = now.getHours();
+        let jam = new Date().toLocaleString("id-ID", {
+            timeZone: "Asia/Jakarta",
+            hour: "numeric",
+            hour12: false
+        });
         let menit = now.getMinutes();
         let detik = now.getSeconds();
         let Nh = hari[now.getDay()];
         let tanggal = now.getDate();
         let bulan = now.toLocaleString("id-ID", { month: "long" });
-        let mobailjam = new Date().toLocaleTimeString("id-ID", { hour12: false, hour: "numeric", timeZone: "Asia/Jakarta" });
         let tahun = now.getFullYear();
 
         let waktu;
 
         if (jam >= 3 && jam < 10) {
             waktu = "Selamat Pagi";
-        }
-        if (jam >= 10 && jam < 15) {
+        } else if (jam >= 10 && jam < 15) {
             waktu = "Selamat Siang";
-        }
-        if (jam >= 15 && jam < 18) {
+        } else if (jam >= 15 && jam < 18) {
             waktu = "Selamat Sore";
-        } 
-        if (jam >= 18 && jam < 4) {
-            waktu = "Selamat Malam";
+        } else {
+            waktu = "Selamat Malam"; // Menangkap semua jam lainnya
         }
-       
+
         // debuging waktu
         console.log(`Waktu Sekarang: ${waktu}`);
 
@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             tanggal: now.getDate(),
             bulan: now.toLocaleString("id-ID", { month: "long" }),
             tahun: now.getFullYear(),
-            Mobail: mobailjam,
+            // Mobail: mobailjam,
             waktu: waktu,
             jam: jam,
             menit: menit,
@@ -193,11 +193,11 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 
     // ulang foto
-    ulangFoto.addEventListener("click", async function() {
+    ulangFoto.addEventListener("click", async function () {
         // matikan priviu lalu nyalakan lagi vidio
         priviu.style.display = "none";
         videoStream.style.display = "block";
-        
+
         foto.style.display = "block";
         send.style.display = "none";
         ulangFoto.style.display = "none";
@@ -241,7 +241,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         let originalText = send.innerText;
 
         // animasi loading
-        send.innerHTML = `<span class="loader"></span>`;
+        send.innerHTML = `<div id="Loading" class="loader"></div>`;
         send.disabled = true;
 
         const id = "7355777672";

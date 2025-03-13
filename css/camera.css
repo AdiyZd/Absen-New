@@ -209,38 +209,23 @@ hr {
 
 /* ANIMASI LOADING */
 
+/* HTML: <div class="loader"></div> */
+
+#Loading {
+  display: flex !important;
+  justify-content: center !important; 
+  align-items: center !important; 
+  /* height: 100vh; */
+}
+
 .loader {
-  width: 15px;
-  height: 15px;
-  display: inline-block;
-  position: relative;
-  border: 3px solid;
-  border-color: #de3500 #0000 #fff #0000;
+  width: 20px !important;
+  aspect-ratio: 1;
   border-radius: 50%;
-  box-sizing: border-box;
-  animation: 1s rotate linear infinite;
+  border: 8px solid;
+  border-color: #000 #0000;
+  animation: l1 1s infinite;
 }
-
-.loader:before,
-.loader:after {
-  content: "";
-  top: 0;
-  left: 0;
-  position: absolute;
-  border: 6px solid transparent;
-  border-bottom-color: #fff;
-  transform: translate(-10px, 19px) rotate(-35deg);
-}
-
-.loader:after {
-  border-color: #de3500 #0000 #0000 #0000;
-  transform: translate(32px, 3px) rotate(-35deg);
-}
-
-@keyframes rotate {
-  100% {
-    transform: rotate(360deg);
-  }
-}
+@keyframes l1 {to{transform: rotate(.5turn)}}
 
 /* END ANIMASI LOADING */
