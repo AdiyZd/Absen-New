@@ -27,19 +27,17 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         if (jam >= 3 && jam < 10) {
             waktu = "Selamat Pagi";
-            WaktuLoBro.innerText = waktu;
         }
         if (jam >= 10 && jam < 15) {
             waktu = "Selamat Siang";
-            WaktuLoBro.innerText = waktu;
         }
         if (jam >= 15 && jam < 18) {
             waktu = "Selamat Sore";
-            WaktuLoBro.innerText = waktu;
         } else {
             waktu = "Selamat Malam";
-            WaktuLoBro.innerText = waktu;
         }
+        WaktuLoBro.innerText = waktu;
+
 
         return {
             hari: hari[now.getDay()],
