@@ -37,6 +37,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             waktu = "Selamat Malam";
         }
        
+        // debuging waktu
         console.log(`Waktu Sekarang: ${waktu}`);
 
         if (WaktuLoBro) {
@@ -66,7 +67,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     // user / nama yang di izinkan untuk absen
     let namaUsernameYangTerdagtar = [
         "Agus Adi Purnomo",
-        "Choiurunn Nisa",
+        "Choirunn Nisa",
         "Nabila Eka Ayu Saputri",
     ];
     // minta acces ke admin
