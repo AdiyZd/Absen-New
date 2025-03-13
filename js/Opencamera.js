@@ -21,17 +21,18 @@ document.addEventListener("DOMContentLoaded", async function () {
         let Nh = hari[now.getDay()];
         let tanggal = now.getDate();
         let bulan = now.toLocaleString("id-ID", { month: "long" });
+        let mobailjam = new Date().toLocaleTimeString("id-ID", { hour12: false, hour: "numeric", timeZone: "Asia/Jakarta" });
         let tahun = now.getFullYear();
 
         let waktu;
 
-        if (jam >= 3 && jam < 10) {
+        if (mobailjam >= 3 && mobailjam < 10) {
             waktu = "Selamat Pagi";
         }
-        if (jam >= 10 && jam < 15) {
+        if (mobailjam >= 10 && mobailjam < 15) {
             waktu = "Selamat Siang";
         }
-        if (jam >= 15 && jam < 18) {
+        if (mobailjam >= 15 && mobailjam < 18) {
             waktu = "Selamat Sore";
         } else {
             waktu = "Selamat Malam";
@@ -52,6 +53,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             tanggal: now.getDate(),
             bulan: now.toLocaleString("id-ID", { month: "long" }),
             tahun: now.getFullYear(),
+            Mobail: mobailjam,
             waktu: waktu,
             jam: jam,
             menit: menit,
