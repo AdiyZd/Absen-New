@@ -210,8 +210,8 @@ hr {
 /* ANIMASI LOADING */
 
 .loader {
-  width: 20px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
   display: inline-block;
   position: relative;
   border: 3px solid;
@@ -227,7 +227,7 @@ hr {
   top: 0;
   left: 0;
   position: absolute;
-  border: 10px solid transparent;
+  border: 6px solid transparent;
   border-bottom-color: #fff;
   transform: translate(-10px, 19px) rotate(-35deg);
 }
