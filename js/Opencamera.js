@@ -34,7 +34,8 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
         if (jam >= 15 && jam < 18) {
             waktu = "Selamat Sore";
-        } else {
+        } 
+        if (jam >= 18 && jam < 4) {
             waktu = "Selamat Malam";
         }
        
