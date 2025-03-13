@@ -26,13 +26,13 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         let waktu;
 
-        if (mobailjam >= 3 && mobailjam < 10) {
+        if (jam >= 3 && jam < 10) {
             waktu = "Selamat Pagi";
         }
-        if (mobailjam >= 10 && mobailjam < 15) {
+        if (jam >= 10 && jam < 15) {
             waktu = "Selamat Siang";
         }
-        if (mobailjam >= 15 && mobailjam < 18) {
+        if (jam >= 15 && jam < 18) {
             waktu = "Selamat Sore";
         } else {
             waktu = "Selamat Malam";
