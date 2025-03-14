@@ -1,27 +1,34 @@
 document.addEventListener("DOMContentLoaded", function () {
   let tes = document.getElementById("absensiA");
-  let tes2 = document.getElementById("izinA");
+  let suratIzinKu = document.getElementById("izinA");
   let tes3 = document.getElementById("rekapA");
   let tes4 = document.getElementById("pulangA");
   const welcomeHari = document.getElementById("welcome");
   const UserName = document.getElementById("nama");
 
-  Home(tes, tes2, tes3, tes4, UserName, welcomeHari);
+  Home(tes, suratIzinKu, tes3, tes4, UserName, welcomeHari);
 });
 
-async function Home(tes, tes2, tes3, tes4, UserName, welcomeHari) {
+// controler
+async function Home(tes, izin, tes3, tes4, UserName, welcomeHari) {
   console.log("Halaman telah dimuat!");
 
   setInterval(() => {
     tanggalWaktu(welcomeHari);
   }, 1000);
 
-  let userValid = await userNameSiswa(tes, tes2, tes3, tes4, UserName);
+  let userValid = await userNameSiswa(tes, izin, tes3, tes4, UserName);
   if (userValid) {
     if (tes) {
-        cekLokasi(tes);
+      cekLokasi(tes);
     } else {
-        console.error("Tidak ditemukan id dengan nama ", tes)
+      console.warn("Element tidak ditemukan", tes);
+    }
+
+    if (izin) {
+      suratIzin(izin);
+    } else {
+      console.warn("Element tidak ditemukan", izin);
     }
   }
 }
@@ -116,7 +123,6 @@ async function userNameSiswa(tes, tes2, tes3, tes4, UserName) {
       let url = `https://wa.me/${owner}?text=${permohonan}`;
       window.open(url, "_blank");
 
-      // ⏳ Setelah WhatsApp terbuka, tampilkan peringatan refresh
       setTimeout(() => {
         Swal.fire({
           icon: "warning",
@@ -127,7 +133,7 @@ async function userNameSiswa(tes, tes2, tes3, tes4, UserName) {
         }).then(() => {
           window.location.reload();
         });
-      }, 3000); // ⏳ Tunggu 3 detik sebelum menampilkan peringatan
+      }, 3000);
     });
 
     return false;
@@ -296,9 +302,9 @@ async function cekLokasi(tes) {
     const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
       Math.cos((lat1 * Math.PI) / 180) *
-        Math.cos((lat2 * Math.PI) / 180) *
-        Math.sin(dLon / 2) *
-        Math.sin(dLon / 2);
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
 
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const jarak = RB * c;
@@ -311,4 +317,23 @@ async function cekLokasi(tes) {
     );
     return jarak; // Mengembalikan jarak dalam meter
   }
+}
+
+// Pengembangan
+function suratIzin(izin) {
+  izin.addEventListener("click", async function () {
+    Swal.fire({
+      title: "Menyiapkan Halaman Izin",
+      text: "Mohon tunggu sebentar",
+      imageUrl: "./img/load-pag.gif",
+      imageWidth: 150,
+      imageHeight: 150,
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+      timer: 5000,
+      timerProgressBar: true,
+    }).then(() => {
+      window.location.href = "izin.html"; // tunggu hingga alret selesai
+    });
+  })
 }
