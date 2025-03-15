@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         let tanggal = now.getDate();
         let bulan = now.toLocaleString("id-ID", { month: "long" });
         let tahun = now.getFullYear();
+        const menu = document.getElementById("span")
 
         let waktu;
 
@@ -44,6 +45,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         if (WaktuLoBro) {
             WaktuLoBro.innerText = waktu;
+            menu.innerHTML = "Absensi"
         } else {
             console.log("Element tidak ditemukan");
         }
@@ -117,6 +119,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     namaBorder.style.display = "block";
     namaBorder.innerText = nama;
+    namaBorder.style.color = "rgb(4, 4, 248)"
     absenBtn.addEventListener("click", function () {
 
         videoStream.style.display = "block";

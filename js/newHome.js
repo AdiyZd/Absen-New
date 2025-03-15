@@ -48,6 +48,7 @@ function tanggalWaktu(welcomeHari) {
   let tanggal = now.getDate();
   let bulan = now.toLocaleString("id-ID", { month: "long" });
   let tahun = now.getFullYear();
+  const home = document.getElementById("span")
 
   let waktu;
 
@@ -63,6 +64,8 @@ function tanggalWaktu(welcomeHari) {
 
   if (welcomeHari) {
     welcomeHari.innerText = waktu;
+    home.innerHTML = "Home"
+
   } else {
     console.log("Element tidak ditemukan");
   }
