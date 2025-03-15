@@ -20,9 +20,10 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <!-- Absensi Fitur -->
-      <a class="navbar-brand position-absolute start-50 translate-middle-x d-flex align-items-center" href="./index.html">
+      <a class="navbar-brand position-absolute start-50 translate-middle-x d-flex align-items-center"
+        href="./index.html">
         <img class="user d-inline-block align-text-top" width="30" height="30" src="./icon/user.svg" />
-        <span class="spane" id="span">Absensi</span>
+        <span class="spane" id="izin"></span>
       </a>
 
       <!-- Logo -->
@@ -55,8 +56,11 @@
                 Follow Me!
               </a>
               <ul class="dropdown-menu dropdown-menu-dark">
-                <li><a class="dropdown-item" href="https://www.instagram.com/sandikomputergringsing?igsh=MWkzNWI4ajY4M2hrcQ==" target="_blank">Instagram</a></li>
-                <li><a class="dropdown-item" href="https://www.facebook.com/profile.php?id=61562370629187" target="_blank">Facebook</a></li>
+                <li><a class="dropdown-item"
+                    href="https://www.instagram.com/sandikomputergringsing?igsh=MWkzNWI4ajY4M2hrcQ=="
+                    target="_blank">Instagram</a></li>
+                <li><a class="dropdown-item" href="https://www.facebook.com/profile.php?id=61562370629187"
+                    target="_blank">Facebook</a></li>
                 <li><a class="dropdown-item" href="https://t.me/@MrBoot77" target="_blank">Telegram</a></li>
                 <li><a class="dropdown-item" href="https://wa.me/6282220542052">Whatsapp</a></li>
                 <li>
@@ -83,12 +87,51 @@
         <div class="card custom-card">
           <div class="card-body text-center">
             <h5 class="card-title" id="timerNavigasi"></h5>
-            <h3 class="card-title" id="nama" style="display: none;" ></h3>
+            <h3 class="card-title" id="nama" style="display: none;"></h3>
             <br />
             <hr />
             <!-- taro video disini -->
-            <div class="row mt-4 justify-content-center">
-              
+            <div class="row mt-4 justify-content-center" id="border">
+              <div class="col-6 mt-5">
+                <h4 class="opsi1">Opsi <span class="izin1">Izin</span></h4>
+                <div class="form-floating mb-3" id="keterangan">
+                  <select class="form-select" id="menu1" aria-label="Floating label select example">
+                    <option id="opsi1" selected >Izin Keterangan Opsi</option>
+                    <option value="1">sakit</option>
+                    <option value="2">Keperluan Keluarga</option>
+                    <option value="3">Terlambat</option>
+                  </select>
+                  <label for="menu1">Pilih menu sesuai Kebutuhan</label>
+                </div>
+                <div class="form-floating">
+                  <select class="form-select" id="menu2" aria-label="Floating label select example">
+                    <option id="opsi1" selected>Izin ketrangan Hari</option>
+                    <option value="1">1. Satu Hari</option>
+                    <option value="2">2. Dua Hari</option>
+                    <option value="3">3. Tiga hari</option>
+                  </select>
+                  <label for="menu2">Pilih menu susuai kebutuhan</label>
+                </div>
+              </div>
+              <div class="col-6 mt-5">
+                <h4 class="opsi2">Keterangan <span class="izin2">Izin</span></h4>
+                <textarea class="form-control" id="floatingTextarea" placeholder="Permohonan!" style="height: 100px"
+                  required></textarea>
+                <label for="floatingTextarea"></label>
+              </div>
+              <div class="col-12 mb-5">
+                <div class="form-floating">
+                  <select class="form-select" id="menu3" aria-label="Floating label select example">
+                    <option id="opsi3" selected>Keberangkatan</option>
+                    <option value="2">Berangkat</option>
+                    <option value="1">Berangkat Siang</option>
+                    <option value="3">Tidak Berangkat</option>
+                  </select>
+                  <label for="menu3">pilih menu sesuai kebutuhan</label>
+                </div>
+              </div>
+              <!-- kirm -->
+              <button class="btn btn-primary" type="submit" id="kirim" style="width: 98%;">Kirim Surat Izin</button>
             </div>
           </div>
         </div>
