@@ -137,21 +137,71 @@ document.addEventListener("DOMContentLoaded", async function () {
             menu2.selectedIndex = 0;
         }
     });
+
+    let UserName = nama;
+    console.log(UserName)
     
     document.getElementById("kirim").addEventListener("click", function () {
         if (!validateSelection("menu1", "Izin Keterangan Opsi")) return; 
         if (!document.getElementById("menu2").disabled && !validateSelection("menu2", "Izin keterangan Hari")) return; 
         if (!validateSelection("menu3", "Keberangkatan")) return;
+        if (!validateTextArea("floatingTextarea", "Permohonan")) return;
     
         let menu1Text = getSelectedText("menu1");
         let menu2Text = document.getElementById("menu2").disabled ? "Tidak berlaku" : getSelectedText("menu2"); 
         let menu3Text = getSelectedText("menu3");
-    
-        Swal.fire({
-            icon: "success",
-            title: "Anda memilih opsi",
-            text: `${menu1Text} : ${menu2Text} : ${menu3Text}` 
-        });
+        let userPermohonan = document.getElementById("floatingTextarea").value;
+        
+        const Token = "";
+        const Id = "";
+
+        function kirimSuratKeterangan() {
+            const Url = `https://api.telegram.org/bot${Token}/sendMessage`;
+
+            let nama = `Nama: ${UserName}\n`
+            let Pesan = `Izin ${menu1Text}\n`
+            if (document.getElementById("menu2").disabled) {
+                Pesan += `Nama: ${nama}\n Durasi: ${menu2Text}\n`
+            };
+            Pesan += `Keberangkatan: ${menu3Text}\n`;
+            Pesan += `Text: ${userPermohonan}`;
+
+            const data = {
+                chat_id : Id, // id admin
+                text : Pesan // pesan yang sudah di validasi
+            };
+
+            fetch(Url, {
+                method: "POST",
+                headers: { "Content-Type" : "application/json" },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json)
+            .then(data => {
+                if (data.ok) {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Pesan Terkirim",
+                        text: "Success"
+                    })
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        text: "Terjadi kesalahan!",
+                        text: "Silahkan Coba Lagi!"
+                    })
+                }
+            })
+            .catch (error => console.warn("Error Terjadi di: ", error))
+        }
+
+        kirimSuratKeterangan() // functions panggil fungsi kirim ke telegram 
+
+        // Swal.fire({
+        //     icon: "success",
+        //     title: "Anda memilih opsi",
+        //     text: `${menu1Text} : ${menu2Text} : ${menu3Text}` 
+        // });
     });
     
     function validateSelection(menuId, defaultText) {
