@@ -10,9 +10,11 @@ document.addEventListener("DOMContentLoaded", async function () {
     const priviu = document.getElementById("priviu");
     const context = priviu.getContext("2d");
     let mati = null;
-    
+
     // pengecekan lokasi
     async function cekLokasi(tes) {
+        absenBtn.removeEventListener("click", cekLokasi);
+    
         if (!tes) {
             console.error("Elemen tombol absensi (tes) tidak ditemukan!");
             return;
@@ -199,11 +201,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     function tanggalWaktu() {
         let now = new Date();
         let hari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
-        let jam = parseInt(
-            new Date().toLocaleString("id-ID", {
-
-            })
-        )
+        let jam = now.getHours()
         let menit = now.getMinutes();
         let detik = now.getSeconds();
         //let Nh = hari[now.getDay()];
@@ -278,7 +276,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         },
     });
 
-    // Pengecekan Username 
+    // Pengecekan Username
     if (!namaUsernameYangTerdagtar.includes(nama)) {
         Swal.fire({
             icon: "warning",
@@ -297,151 +295,150 @@ document.addEventListener("DOMContentLoaded", async function () {
         return;
     }
 
-    absenBtn.addEventListener("click", async function () { });
-
     namaBorder.style.display = "block";
     namaBorder.innerText = nama;
     namaBorder.style.color = "rgb(4, 4, 248)";
-    absenBtn.addEventListener("click", function () { cekLokasi(absenBtn); });
+    cekLokasi();
 
-    //  Mengambil Foto 
-    foto.addEventListener("click", function () {
-        if (!videoStream.srcObject) {
-            console.log("Kamera belum aktif");
-            return;
-        }
+    // Buka Foto 
+    function FotoAbsensiSkm() {
+        foto.addEventListener("click", function () {
+            if (!videoStream.srcObject) {
+                console.log("Kamera belum aktif");
+                return;
+            }
 
-        // ukuran foto
-        priviu.width = videoStream.videoWidth;
-        priviu.height = videoStream.videoHeight;
+            // ukuran foto
+            priviu.width = videoStream.videoWidth;
+            priviu.height = videoStream.videoHeight;
 
-        // frem vidio
-        context.save();
-        context.scale(-1, 1);
-        context.drawImage(
-            videoStream,
-            -priviu.width,
-            0,
-            priviu.width,
-            priviu.height
-        );
-        context.restore();
+            // frem vidio
+            context.save();
+            context.scale(-1, 1);
+            context.drawImage(
+                videoStream,
+                -priviu.width,
+                0,
+                priviu.width,
+                priviu.height
+            );
+            context.restore();
 
-        // matikan kamera biyar vidio mati dan tampilan normal lagi
-        if (mati) {
-            let cekCamera = mati.getTracks();
-            cekCamera.forEach((track) => track.stop()); // stok kamera
-            videoStream.srcObject = null;
-        }
+            // matikan kamera biyar vidio mati dan tampilan normal lagi
+            if (mati) {
+                let cekCamera = mati.getTracks();
+                cekCamera.forEach((track) => track.stop()); // stok kamera
+                videoStream.srcObject = null;
+            }
 
-        // matikan vidio dan tombol ambil foto
-        videoStream.style.display = "none";
-        foto.style.display = "none";
-        // send telegram
-        send.style.display = "inline-block";
-        ulangFoto.style.display = "inline-block";
+            // matikan vidio dan tombol ambil foto
+            videoStream.style.display = "none";
+            foto.style.display = "none";
+            // send telegram
+            send.style.display = "inline-block";
+            ulangFoto.style.display = "inline-block";
 
-        priviu.style.display = "block";
-    });
+            priviu.style.display = "block";
+        });
 
-    // Ulangi Foro 
-    ulangFoto.addEventListener("click", async function () {
-        // matikan priviu lalu nyalakan lagi vidio
-        priviu.style.display = "none";
-        videoStream.style.display = "block";
+        // ulang foto
+        ulangFoto.addEventListener("click", async function () {
+            // matikan priviu lalu nyalakan lagi vidio
+            priviu.style.display = "none";
+            videoStream.style.display = "block";
 
-        foto.style.display = "block";
-        send.style.display = "none";
-        ulangFoto.style.display = "none";
-        // nyalakan kamera
-        navigator.mediaDevices
-            .getUserMedia({
-                video: {
-                    width: { ideal: 1280 },
-                    height: { ideal: 720 },
-                    facingMode: "user",
-                },
-            })
-            .then((streamKamera) => {
-                mati = streamKamera;
-                videoStream.srcObject = streamKamera;
-                videoStream.play();
+            foto.style.display = "block";
+            send.style.display = "none";
+            ulangFoto.style.display = "none";
+            // nyalakan kamera
+            navigator.mediaDevices
+                .getUserMedia({
+                    video: {
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 },
+                        facingMode: "user",
+                    },
+                })
+                .then((streamKamera) => {
+                    mati = streamKamera;
+                    videoStream.srcObject = streamKamera;
+                    videoStream.play();
 
-                // Disable tombol setelah kamera aktif
-                absenBtn.disabled = true;
-                absenBtn.innerText = "Kamera Aktif";
-            })
-            .catch((error) => {
-                console.error("Akses Kamera Ditolak: ", error);
-                videoStream.style.display = "none";
-                Swal.fire({
-                    icon: "error",
-                    title: "Akses Kamera Ditolak",
-                    text: "Mohon izinkan akses kamera untuk melakukan absen",
-                    draggable: true,
+                    // Disable tombol setelah kamera aktif
+                    absenBtn.disabled = true;
+                    absenBtn.innerText = "Kamera Aktif";
+                })
+                .catch((error) => {
+                    console.error("Akses Kamera Ditolak: ", error);
+                    videoStream.style.display = "none";
+                    Swal.fire({
+                        icon: "error",
+                        title: "Akses Kamera Ditolak",
+                        text: "Mohon izinkan akses kamera untuk melakukan absen",
+                        draggable: true,
+                    });
                 });
-            });
-    });
+        });
 
-    // Kirim Absensi
-    send.addEventListener("click", async function () {
-        const imageData = priviu.toDataURL("image/jpeg");
+        // kirim absen
+        send.addEventListener("click", async function () {
+            const imageData = priviu.toDataURL("image/jpeg");
 
-        // original text
-        let originalText = send.innerText;
+            // original text
+            let originalText = send.innerText;
 
-        // animasi loading
-        send.innerHTML = `<div id="Loading" class="loader"></div>`;
-        send.disabled = true;
+            // animasi loading
+            send.innerHTML = `<div id="Loading" class="loader"></div>`;
+            send.disabled = true;
 
-        const id = "7355777672";
-        const apiTelegramBot = "7079092015:AAFOhQM0L0PGWmKcfW2DULtjo0KHzBEHbz8";
+            const id = "7355777672";
+            const apiTelegramBot = "7079092015:AAFOhQM0L0PGWmKcfW2DULtjo0KHzBEHbz8";
 
-        // blob konverst
-        let blob = await fetch(imageData).then((res) => res.blob());
-        let formData = new FormData();
-        formData.append("chat_id", id);
-        formData.append("photo", blob, "absen.jpg");
-        formData.append(
-            "caption",
-            `Absen: ✅ \n Nama: ${nama} \n Hari: ${hari} \n Tanggal: ${tanggal} \n Jam: ${jam} \n Menit: ${menit}:${Detik} \n Bulan: ${bulan} \n Tahun: ${tahun}`
-        );
-
-        // kirim
-        try {
-            let response = await fetch(
-                `https://api.telegram.org/bot${apiTelegramBot}/sendPhoto`,
-                {
-                    method: "POST",
-                    body: formData,
-                }
+            // blob konverst
+            let blob = await fetch(imageData).then((res) => res.blob());
+            let formData = new FormData();
+            formData.append("chat_id", id);
+            formData.append("photo", blob, "absen.jpg");
+            formData.append(
+                "caption",
+                `Absen: ✅ \n Nama: ${nama} \n Hari: ${hari} \n Tanggal: ${tanggal} \n Jam: ${jam} \n Menit: ${menit}:${Detik} \n Bulan: ${bulan} \n Tahun: ${tahun}`
             );
 
-            let hasil = await response.json();
+            // kirim
+            try {
+                let response = await fetch(
+                    `https://api.telegram.org/bot${apiTelegramBot}/sendPhoto`,
+                    {
+                        method: "POST",
+                        body: formData,
+                    }
+                );
 
-            if (hasil.ok) {
+                let hasil = await response.json();
+
+                if (hasil.ok) {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Berhasil",
+                        text: "Absen berhasil dikirim",
+                        draggable: true,
+                    });
+                } else {
+                    throw new Error(hasil.description);
+                }
+            } catch (error) {
+                // debuging nyalakan jika gak bisa kirim
+                // console.error("Error: ", error);
                 Swal.fire({
-                    icon: "success",
-                    title: "Berhasil",
-                    text: "Absen berhasil dikirim",
+                    icon: "error",
+                    title: "Gagal mengirim",
+                    text: `Error terjadi di Error: ${error.message}`,
                     draggable: true,
                 });
-            } else {
-                throw new Error(hasil.description);
+            } finally {
+                send.innerHTML = originalText;
+                send.disabled = false;
             }
-        } catch (error) {
-            // debuging nyalakan jika gak bisa kirim
-            // console.error("Error: ", error);
-            Swal.fire({
-                icon: "error",
-                title: "Gagal mengirim",
-                text: `Error terjadi di Error: ${error.message}`,
-                draggable: true,
-            });
-        } finally {
-            send.innerText = originalText;
-            send.disabled = false;
-        }
-    });
-
-})
+        });
+    }
+});

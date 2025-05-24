@@ -154,8 +154,7 @@ async function userNameSiswa(tes, tes2, tes3, tes4, UserName) {
   await Swal.fire({
     icon: "info",
     title: "Peraturan SandiKomputer!",
-    html: 
-    `
+    html: `
     <ol style="text-align: left;">
       <li>. Jika tidak berangkat harus ada izin yang jelas.</li>
       <li>. Melaksanakan jadwal piket yang di tentukan. </li>
@@ -177,7 +176,7 @@ async function userNameSiswa(tes, tes2, tes3, tes4, UserName) {
     `,
     confirmButtonText: "Ya Saya Mengerti!",
     allowOutsideClick: false,
-  })
+  });
 
   // Aktifkan tombol
   tes.style.display = "block";
