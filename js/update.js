@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", async function () {
-    // fungsi
+    //DATA
     const namaBorder = document.getElementById("nama");
     const absenBtn = document.getElementById("absenBtn");
     const WaktuLoBro = document.getElementById("timerNavigasi");
@@ -11,11 +11,191 @@ document.addEventListener("DOMContentLoaded", async function () {
     const context = priviu.getContext("2d");
     let mati = null;
     
-    // Panggil fungsi cekLokasi setelah DOM siap
+    // pengecekan lokasi
+    async function cekLokasi(tes) {
+        if (!tes) {
+            console.error("Elemen tombol absensi (tes) tidak ditemukan!");
+            return;
+        }
 
-    const tombolAbsen = document.getElementById("absenBtn");
-    cekLokasi(tombolAbsen);
+        tes.addEventListener("click", async function (enev) {
+            enev.preventDefault(); // Mencegah reload atau default action
 
+            try {
+                let dalamLokasi = await LokasiSaya();
+
+                if (!dalamLokasi) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Lokasi Tidak Sesuai",
+                        text: "Kamu berada di luar area yang diizinkan.",
+                    });
+                    return;
+                }
+
+                Swal.fire({
+                    title: "Menyiapkan Kamera",
+                    text: "Mohon tunggu sebentar",
+                    imageUrl: "./img/load-pag.gif",
+                    imageWidth: 150,
+                    imageHeight: 150,
+                    allowOutsideClick: false,
+                    didOpen: () => Swal.showLoading(),
+                    timer: 3000,
+                    timerProgressBar: true,
+                }).then(async () => {
+                    const videoStream = document.getElementById("videoStream");
+                    const foto = document.getElementById("foto");
+                    const absenBtn = document.getElementById("absenBtn");
+
+                    videoStream.style.display = "block";
+                    foto.style.display = "block";
+                    absenBtn.style.display = "none";
+
+                    const streamKamera = await navigator.mediaDevices.getUserMedia({
+                        video: {
+                            width: { ideal: 1280 },
+                            height: { ideal: 720 },
+                            facingMode: "user",
+                        },
+                    });
+
+                    videoStream.srcObject = streamKamera;
+                    videoStream.play();
+
+                    absenBtn.disabled = true;
+                    absenBtn.innerText = "Kamera Aktif";
+                });
+            } catch (error) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: `Terjadi kesalahan: ${error.message}`,
+                });
+            }
+        });
+
+        async function LokasiSaya() {
+            return new Promise((resolve, reject) => {
+                if ("geolocation" in navigator) {
+                    Swal.fire({
+                        imageUrl: "./img/location.gif",
+                        imageWidth: 150,
+                        imageHeight: 150,
+                        title: "Memeriksa Lokasi Anda",
+                        text: "Mohon tunggu sebentar",
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        },
+                    });
+
+                    navigator.geolocation.getCurrentPosition(
+                        async function (posisi) {
+                            let lokasiValid = await posisiAnda(posisi);
+                            resolve(lokasiValid);
+                        },
+                        function (error) {
+                            let errorMessage = "Terjadi kesalahan saat mengambil lokasi.";
+                            switch (error.code) {
+                                case error.PERMISSION_DENIED:
+                                    errorMessage = "Silahkan izinkan lokasi Anda!";
+                                    Swal.fire({
+                                        title: "Lokasi Tidak Dapat Ditemukan",
+                                        text: errorMessage,
+                                        imageUrl: "./img/no-location.png",
+                                        imageWidth: 150,
+                                        imageHeight: 150,
+                                    });
+                                    break;
+                                case error.POSITION_UNAVAILABLE:
+                                    errorMessage = "Mohon izinkan lokasi pada browser.";
+                                    Swal.fire({
+                                        title: "Lokasi Tidak Dapat Ditemukan",
+                                        text: errorMessage,
+                                        imageUrl: "./img/emigration.png",
+                                        imageWidth: 150,
+                                        imageHeight: 150,
+                                    }).then(() => reject(false));
+                                    break;
+                                case error.TIMEOUT:
+                                    errorMessage = "Mohon coba lagi, koneksi tidak stabil.";
+                                    Swal.fire({
+                                        title: "Koneksi Internet Tidak Stabil",
+                                        text: errorMessage,
+                                        imageUrl: "./img/no-wifi.png",
+                                        imageWidth: 150,
+                                        imageHeight: 150,
+                                    });
+                                    break;
+                                default:
+                                    Swal.fire({
+                                        icon: "warning",
+                                        title: "Terjadi Kesalahan",
+                                        text: "Mohon coba lagi",
+                                    });
+                            }
+                            reject(false);
+                        }
+                    );
+                } else {
+                    Swal.fire({
+                        title: "Browser Tidak Mendukung Geolocation",
+                        text: "Silahkan gunakan browser lain",
+                        icon: "warning",
+                    });
+                    reject(false);
+                }
+            });
+        }
+
+        function posisiAnda(posisi) {
+            let lok1 = posisi.coords.latitude;
+            let lok2 = posisi.coords.longitude;
+
+            console.log(`Koordinat User: ${lok1}, ${lok2}`);
+
+            let BatasLokasiAccess = [
+                { lat: -6.970946, lng: 110.018758 },
+                { lat: -6.970872, lng: 110.018765 },
+                { lat: -6.97086, lng: 110.018706 },
+                { lat: -6.970945, lng: 110.018698 },
+            ];
+
+            let maxRadius = 20; // meter
+            let DalamLokasi = BatasLokasiAccess.some(
+                (loc) => hitungJarak(lok1, lok2, loc.lat, loc.lng) <= maxRadius
+            );
+
+            Swal.close();
+            return DalamLokasi;
+        }
+
+        function hitungJarak(lat1, lon1, lat2, lon2) {
+            const RB = 6371000; // Radius Bumi (meter)
+            const dLat = ((lat2 - lat1) * Math.PI) / 180;
+            const dLon = ((lon2 - lon1) * Math.PI) / 180;
+
+            const a =
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos((lat1 * Math.PI) / 180) *
+                Math.cos((lat2 * Math.PI) / 180) *
+                Math.sin(dLon / 2) *
+                Math.sin(dLon / 2);
+
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            const jarak = RB * c;
+
+            console.log(
+                `Jarak antara (${lat1}, ${lon1}) dan (${lat2}, ${lon2}) adalah ${jarak.toFixed(
+                    2
+                )} meter`
+            );
+            return jarak;
+        }
+    }
+
+    // Fungsi Tanggal dan Waktu
     function tanggalWaktu() {
         let now = new Date();
         let hari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
@@ -66,12 +246,10 @@ document.addEventListener("DOMContentLoaded", async function () {
             Detik: detik,
         };
     }
-
-    // menghitun titik lokasi saya berada apakah  di dalam lokasi atau tidak!
-
+    // Panggil fungsi tanggalWaktu setiap detik
     let { hari, tanggal, bulan, tahun, Detik, menit, jam } = tanggalWaktu();
 
-    // user / nama yang di izinkan untuk absen
+    // User yang terdaftar
     let namaUsernameYangTerdagtar = [
         "Admin Web",
         "Agus Adi Purnomo",
@@ -79,8 +257,8 @@ document.addEventListener("DOMContentLoaded", async function () {
         "Nabila Eka Ayu Saputri",
         "Lailita Al Hikmah",
     ];
-    // minta acces ke admin
 
+    // Error yang di tentukan
     const { value: nama } = await Swal.fire({
         imageUrl: "./icon/card.gif",
         imageHeight: 150,
@@ -100,6 +278,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         },
     });
 
+    // Pengecekan Username 
     if (!namaUsernameYangTerdagtar.includes(nama)) {
         Swal.fire({
             icon: "warning",
@@ -120,46 +299,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     absenBtn.addEventListener("click", async function () { });
 
-    // console.log("hari: ", hari);
-
     namaBorder.style.display = "block";
     namaBorder.innerText = nama;
     namaBorder.style.color = "rgb(4, 4, 248)";
-    absenBtn.addEventListener("click", function () {
-        videoStream.style.display = "block";
-        foto.style.display = "block";
+    absenBtn.addEventListener("click", function () { cekLokasi(absenBtn); });
 
-        absenBtn.style.display = "none";
-        navigator.mediaDevices
-            .getUserMedia({
-                video: {
-                    width: { ideal: 1280 },
-                    height: { ideal: 720 },
-                    facingMode: "user",
-                },
-            })
-            .then((streamKamera) => {
-                mati = streamKamera;
-                videoStream.srcObject = streamKamera;
-                videoStream.play();
-
-                // Disable tombol setelah kamera aktif
-                absenBtn.disabled = true;
-                absenBtn.innerText = "Kamera Aktif";
-            })
-            .catch((error) => {
-                console.error("Akses Kamera Ditolak: ", error);
-                videoStream.style.display = "none";
-                Swal.fire({
-                    icon: "error",
-                    title: "Akses Kamera Ditolak",
-                    text: "Mohon izinkan akses kamera untuk melakukan absen",
-                    draggable: true,
-                });
-            });
-    });
-
-    //   ambil foto
+    //  Mengambil Foto 
     foto.addEventListener("click", function () {
         if (!videoStream.srcObject) {
             console.log("Kamera belum aktif");
@@ -199,7 +344,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         priviu.style.display = "block";
     });
 
-    // ulang foto
+    // Ulangi Foro 
     ulangFoto.addEventListener("click", async function () {
         // matikan priviu lalu nyalakan lagi vidio
         priviu.style.display = "none";
@@ -238,7 +383,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             });
     });
 
-    // kirim absen
+    // Kirim Absensi
     send.addEventListener("click", async function () {
         const imageData = priviu.toDataURL("image/jpeg");
 
@@ -294,8 +439,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                 draggable: true,
             });
         } finally {
-            send.innerHTML = originalText;
+            send.innerText = originalText;
             send.disabled = false;
         }
     });
-});
+
+})

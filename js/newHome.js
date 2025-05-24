@@ -48,7 +48,7 @@ function tanggalWaktu(welcomeHari) {
   let tanggal = now.getDate();
   let bulan = now.toLocaleString("id-ID", { month: "long" });
   let tahun = now.getFullYear();
-  const home = document.getElementById("span")
+  const home = document.getElementById("span");
 
   let waktu;
 
@@ -64,8 +64,7 @@ function tanggalWaktu(welcomeHari) {
 
   if (welcomeHari) {
     welcomeHari.innerText = waktu;
-    home.innerHTML = "Home"
-
+    home.innerHTML = "Home";
   } else {
     console.log("Element tidak ditemukan");
   }
@@ -86,6 +85,7 @@ function tanggalWaktu(welcomeHari) {
 // Fungsi untuk memvalidasi nama pengguna
 async function userNameSiswa(tes, tes2, tes3, tes4, UserName) {
   let namaUsernameYangTerdagtar = [
+    "Admin Web",
     "Agus Adi Purnomo",
     "Choirunn Nisa",
     "Nabila Eka Ayu Saputri",
@@ -111,6 +111,7 @@ async function userNameSiswa(tes, tes2, tes3, tes4, UserName) {
     },
   });
 
+  // cek nama terdaftar atau tidak
   if (!namaUsernameYangTerdagtar.includes(nama)) {
     Swal.fire({
       icon: "warning",
@@ -147,6 +148,36 @@ async function userNameSiswa(tes, tes2, tes3, tes4, UserName) {
     UserName.style.display = "block";
     UserName.innerHTML = nama;
   }
+
+  // peraturan alret
+
+  await Swal.fire({
+    icon: "info",
+    title: "Peraturan SandiKomputer!",
+    html: 
+    `
+    <ol style="text-align: left;">
+      <li>. Jika tidak berangkat harus ada izin yang jelas.</li>
+      <li>. Melaksanakan jadwal piket yang di tentukan. </li>
+      <li>. Menjaga kebersihan tempat / toko. </li>
+      <li>. Menjaga etika dan sopan santun. </li>
+      <li>. Bersedia dikeluarakan saat sp lebih dari  3.</li>
+      <li>. Dilarang meninggalkan tempat tanpa izin </li>
+      <li>. Dilarang merusak fasilitas yang ada di ruangan. </li>
+      <li>. Apa bila merusak barang / fasilitas harus bersedia bertanggung jawan.</li>
+      <li>. Dilarang menggunakan aksesoris yang berlebihan.</li>
+      <li>. Menjaga nama baik toko / tempat.</li>
+      <li>. Wajib melapor jika ada kendala.</li>
+      <li>. Tiba di tempat tepat waktu.</li>
+      <li>. Dilarang menggunakan pakaian yang tidak sopan.</li>
+      <li>. Tetap aktif dan sigap dalam menjalankan tugas.</li>
+      <li>. Tidak menyebarkan informasi internal tanpa izin.</li>
+    </ol>
+
+    `,
+    confirmButtonText: "Ya Saya Mengerti!",
+    allowOutsideClick: false,
+  })
 
   // Aktifkan tombol
   tes.style.display = "block";
@@ -305,9 +336,9 @@ async function cekLokasi(tes) {
     const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
       Math.cos((lat1 * Math.PI) / 180) *
-      Math.cos((lat2 * Math.PI) / 180) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
+        Math.cos((lat2 * Math.PI) / 180) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
 
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const jarak = RB * c;
@@ -338,5 +369,5 @@ function suratIzin(izin) {
     }).then(() => {
       window.location.href = "izin.html"; // tunggu hingga alret selesai
     });
-  })
+  });
 }
