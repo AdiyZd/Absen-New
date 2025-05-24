@@ -155,22 +155,23 @@ async function userNameSiswa(tes, tes2, tes3, tes4, UserName) {
     icon: "info",
     title: "Peraturan SandiKomputer!",
     html: `
+    
     <ol style="text-align: left;">
-      <li>. Jika tidak berangkat harus ada izin yang jelas.</li>
-      <li>. Melaksanakan jadwal piket yang di tentukan. </li>
-      <li>. Menjaga kebersihan tempat / toko. </li>
-      <li>. Menjaga etika dan sopan santun. </li>
-      <li>. Bersedia dikeluarakan saat sp lebih dari  3.</li>
-      <li>. Dilarang meninggalkan tempat tanpa izin </li>
-      <li>. Dilarang merusak fasilitas yang ada di ruangan. </li>
-      <li>. Apa bila merusak barang / fasilitas harus bersedia bertanggung jawan.</li>
-      <li>. Dilarang menggunakan aksesoris yang berlebihan.</li>
-      <li>. Menjaga nama baik toko / tempat.</li>
-      <li>. Wajib melapor jika ada kendala.</li>
-      <li>. Tiba di tempat tepat waktu.</li>
-      <li>. Dilarang menggunakan pakaian yang tidak sopan.</li>
-      <li>. Tetap aktif dan sigap dalam menjalankan tugas.</li>
-      <li>. Tidak menyebarkan informasi internal tanpa izin.</li>
+      <li> Jika tidak berangkat harus ada izin yang jelas.</li>
+      <li> Melaksanakan jadwal piket yang di tentukan. </li>
+      <li> Menjaga kebersihan tempat / toko. </li>
+      <li> Menjaga etika dan sopan santun. </li>
+      <li> Bersedia dikeluarakan saat sp lebih dari  3 (TIGA).</li>
+      <li> Dilarang meninggalkan tempat tanpa izin </li>
+      <li> Dilarang merusak fasilitas yang ada di ruangan. </li>
+      <li> Apa bila merusak barang / fasilitas harus bersedia bertanggung jawan.</li>
+      <li> Dilarang menggunakan aksesoris yang berlebihan.</li>
+      <li> Menjaga nama baik toko / tempat.</li>
+      <li> Wajib melapor jika ada kendala.</li>
+      <li> Tiba di tempat tepat waktu.</li>
+      <li> Dilarang menggunakan pakaian yang tidak sopan.</li>
+      <li> Tetap aktif dan sigap dalam menjalankan tugas.</li>
+      <li> Tidak menyebarkan informasi internal tanpa izin.</li>
     </ol>
 
     `,
@@ -335,9 +336,9 @@ async function cekLokasi(tes) {
     const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
       Math.cos((lat1 * Math.PI) / 180) *
-        Math.cos((lat2 * Math.PI) / 180) *
-        Math.sin(dLon / 2) *
-        Math.sin(dLon / 2);
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
 
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const jarak = RB * c;
