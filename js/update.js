@@ -22,60 +22,98 @@ document.addEventListener("DOMContentLoaded", async function () {
         absenBtn.addEventListener("click", handleAbsenClick);
 
         async function handleAbsenClick(event) {
-            event.preventDefault(); // Menghilangkan fungsi default pada tombol/link
-                try {
-                    let dalamLokasi = await LokasiSaya();
+            event.preventDefault();
 
-                    if (!dalamLokasi) {
-                        Swal.fire({
-                            icon: "warning",
-                            title: "Lokasi Tidak Sesuai",
-                            text: "Kamu berada di luar area yang diizinkan.",
-                        });
-                        return;
-                    }
-
+            try {
+                let dalamLokasi = await LokasiSaya();
+                if (!dalamLokasi) {
                     await Swal.fire({
-                        title: "Menyiapkan Kamera",
-                        text: "Mohon tunggu sebentar",
-                        imageUrl: "./img/load-pag.gif",
-                        imageWidth: 150,
-                        imageHeight: 150,
-                        allowOutsideClick: false,
-                        didOpen: () => Swal.showLoading(),
-                        timer: 3000,
-                        timerProgressBar: true,
-                    }).then(async () => {
-                        // const videoStream = document.getElementById("videoStream");
-                        const foto = document.getElementById("foto");
-                        const absenBtn = document.getElementById("absenBtn");
+                        icon: "warning",
+                        title: "Lokasi Tidak Sesuai",
+                        text: "Kamu berada di luar area yang diizinkan.",
+                    });
+                    return;
+                }
 
-                        videoStream.style.display = "block";
-                        foto.style.display = "block";
-                        absenBtn.style.display = "none";
+                // Menampilkan loading tanpa timer
+                await Swal.fire({
+                    title: "Menyiapkan Kamera",
+                    text: "Mohon tunggu sebentar...",
+                    imageUrl: "./img/load-pag.gif",
+                    imageWidth: 150,
+                    imageHeight: 150,
+                    allowOutsideClick: false,
+                    didOpen: () => Swal.showLoading(),
+                    showConfirmButton: false,
+                    allowEscapeKey: false,
+                });
 
-                        const streamKamera = await navigator.mediaDevices.getUserMedia({
+                // Pastikan elemen videoStream sudah didefinisikan di scope atas
+                if (!videoStream) {
+                    throw new Error("Elemen video tidak ditemukan");
+                }
+
+                videoStream.style.display = "block";
+                foto.style.display = "block";
+                absenBtn.style.display = "none";
+
+                try {
+                    const streamKamera = await navigator.mediaDevices
+                        .getUserMedia({
                             video: {
                                 width: { ideal: 1280 },
                                 height: { ideal: 720 },
                                 facingMode: "user",
                             },
+                        })
+                        .catch((err) => {
+                            throw new Error(`Gagal mengakses kamera: ${err.message}`);
                         });
 
-                        videoStream.srcObject = streamKamera;
-                        videoStream.play();
+                    videoStream.srcObject = streamKamera;
 
-                        absenBtn.disabled = true;
-                        absenBtn.innerText = "Kamera Aktif";
-                    });
-                } catch (error) {
-                Swal.fire({
+                    // Tambahkan event listener untuk memastikan video bisa play
+                    videoStream.onloadedmetadata = () => {
+                        videoStream.play().catch((err) => {
+                            console.error("Gagal memainkan video:", err);
+                            throw new Error("Tidak bisa memulai kamera");
+                        });
+                    };
+
+                    absenBtn.disabled = true;
+                    absenBtn.textContent = "Kamera Aktif";
+
+                    // Tutup loading setelah kamera berhasil start
+                    Swal.close();
+                } catch (err) {
+                    Swal.close();
+                    throw err; // Lempar error ke catch terluar
+                }
+            } catch (error) {
+                console.error("Error:", error);
+
+                // Reset UI jika gagal
+                videoStream.style.display = "none";
+                absenBtn.style.display = "block";
+                absenBtn.disabled = false;
+                absenBtn.textContent = "Coba Lagi";
+
+                // Tampilkan error spesifik
+                let errorMessage = error.message;
+                if (error.message.includes("permission")) {
+                    errorMessage = "Mohon berikan izin akses kamera di browser Anda";
+                } else if (error.message.includes("found")) {
+                    errorMessage = "Perangkat kamera tidak ditemukan";
+                }
+
+                await Swal.fire({
                     icon: "error",
-                    title: "Error",
-                    text: `Terjadi kesalahan: ${error.message}`,
+                    title: "Gagal Mengakses Kamera",
+                    text: errorMessage,
+                    confirmButtonText: "Mengerti",
                 });
             }
-        };
+        }
 
         async function LokasiSaya() {
             return new Promise((resolve, reject) => {
@@ -201,7 +239,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     function tanggalWaktu() {
         let now = new Date();
         let hari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
-        let jam = now.getHours()
+        let jam = now.getHours();
         let menit = now.getMinutes();
         let detik = now.getSeconds();
         //let Nh = hari[now.getDay()];
@@ -253,7 +291,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         "Agus Adi Purnomo",
         "Admin",
         "Fitra Raveli Suhardi",
-        "Meyda Ariyani"
+        "Meyda Ariyani",
     ];
 
     // Error yang di tentukan
@@ -300,7 +338,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     namaBorder.style.color = "rgb(4, 4, 248)";
     cekLokasi();
 
-    // Buka Foto 
+    // Buka Foto
     function FotoAbsensiSkm() {
         foto.addEventListener("click", function () {
             if (!videoStream.srcObject) {
