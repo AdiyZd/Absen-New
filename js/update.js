@@ -25,6 +25,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             event.preventDefault();
 
             try {
+                // 1. Cek lokasi terlebih dahulu
                 let dalamLokasi = await LokasiSaya();
                 if (!dalamLokasi) {
                     await Swal.fire({
@@ -35,7 +36,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     return;
                 }
 
-                // Menampilkan loading tanpa timer
+                // 2. Tampilkan loading kamera
                 await Swal.fire({
                     title: "Menyiapkan Kamera",
                     text: "Mohon tunggu sebentar...",
@@ -48,47 +49,43 @@ document.addEventListener("DOMContentLoaded", async function () {
                     allowEscapeKey: false,
                 });
 
-                // Pastikan elemen videoStream sudah didefinisikan di scope atas
-                if (!videoStream) {
-                    throw new Error("Elemen video tidak ditemukan");
-                }
-
+                // 3. Aktifkan kamera
                 videoStream.style.display = "block";
                 foto.style.display = "block";
                 absenBtn.style.display = "none";
 
-                try {
-                    const streamKamera = await navigator.mediaDevices
-                        .getUserMedia({
-                            video: {
-                                width: { ideal: 1280 },
-                                height: { ideal: 720 },
-                                facingMode: "user",
-                            },
-                        })
-                        .catch((err) => {
-                            throw new Error(`Gagal mengakses kamera: ${err.message}`);
-                        });
+                const streamKamera = await navigator.mediaDevices
+                    .getUserMedia({
+                        video: {
+                            width: { ideal: 1280 },
+                            height: { ideal: 720 },
+                            facingMode: "user",
+                        },
+                    })
+                    .catch((err) => {
+                        throw new Error(`Gagal mengakses kamera: ${err.message}`);
+                    });
 
-                    videoStream.srcObject = streamKamera;
+                videoStream.srcObject = streamKamera;
 
-                    // Tambahkan event listener untuk memastikan video bisa play
+                // 4. Tunggu sampai kamera benar-benar siap
+                await new Promise((resolve) => {
                     videoStream.onloadedmetadata = () => {
-                        videoStream.play().catch((err) => {
-                            console.error("Gagal memainkan video:", err);
-                            throw new Error("Tidak bisa memulai kamera");
-                        });
+                        videoStream
+                            .play()
+                            .then(resolve)
+                            .catch((err) => {
+                                throw new Error(`Gagal memutar video: ${err.message}`);
+                            });
                     };
+                });
 
-                    absenBtn.disabled = true;
-                    absenBtn.textContent = "Kamera Aktif";
+                // 5. Tutup loading dan aktifkan fungsi foto
+                Swal.close();
+                FotoAbsensiSkm(); // <-- PANGGIL FUNGSI INI SETELAH KAMERA SIAP
 
-                    // Tutup loading setelah kamera berhasil start
-                    Swal.close();
-                } catch (err) {
-                    Swal.close();
-                    throw err; // Lempar error ke catch terluar
-                }
+                absenBtn.disabled = true;
+                absenBtn.textContent = "Kamera Aktif";
             } catch (error) {
                 console.error("Error:", error);
 
@@ -98,18 +95,12 @@ document.addEventListener("DOMContentLoaded", async function () {
                 absenBtn.disabled = false;
                 absenBtn.textContent = "Coba Lagi";
 
-                // Tampilkan error spesifik
-                let errorMessage = error.message;
-                if (error.message.includes("permission")) {
-                    errorMessage = "Mohon berikan izin akses kamera di browser Anda";
-                } else if (error.message.includes("found")) {
-                    errorMessage = "Perangkat kamera tidak ditemukan";
-                }
-
-                await Swal.fire({
+                Swal.fire({
                     icon: "error",
                     title: "Gagal Mengakses Kamera",
-                    text: errorMessage,
+                    text: error.message.includes("permission")
+                        ? "Mohon berikan izin akses kamera di browser Anda"
+                        : error.message,
                     confirmButtonText: "Mengerti",
                 });
             }
