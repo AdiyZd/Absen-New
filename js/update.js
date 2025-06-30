@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 }
 
                 // 2. Tampilkan loading kamera
-                await Swal.fire({
+                Swal.fire({
                     title: "Menyiapkan Kamera",
                     text: "Mohon tunggu sebentar...",
                     imageUrl: "./img/load-pag.gif",
@@ -49,52 +49,10 @@ document.addEventListener("DOMContentLoaded", async function () {
                     allowEscapeKey: false,
                 });
 
-                // 3. Aktifkan kamera
-                videoStream.style.display = "block";
-                foto.style.display = "block";
-                absenBtn.style.display = "none";
-
-                const streamKamera = await navigator.mediaDevices
-                    .getUserMedia({
-                        video: {
-                            width: { ideal: 1280 },
-                            height: { ideal: 720 },
-                            facingMode: "user",
-                        },
-                    })
-                    .catch((err) => {
-                        throw new Error(`Gagal mengakses kamera: ${err.message}`);
-                    });
-
-                videoStream.srcObject = streamKamera;
-
-                // 4. Tunggu sampai kamera benar-benar siap
-                await new Promise((resolve) => {
-                    videoStream.onloadedmetadata = () => {
-                        videoStream
-                            .play()
-                            .then(resolve)
-                            .catch((err) => {
-                                throw new Error(`Gagal memutar video: ${err.message}`);
-                            });
-                    };
-                });
-
-                // 5. Tutup loading dan aktifkan fungsi foto
                 Swal.close();
-                FotoAbsensiSkm(); // <-- PANGGIL FUNGSI INI SETELAH KAMERA SIAP
+                await FotoAbsensiSkm(); // Panggil fungsi untuk membuka kamera
 
-                absenBtn.disabled = true;
-                absenBtn.textContent = "Kamera Aktif";
             } catch (error) {
-                console.error("Error:", error);
-
-                // Reset UI jika gagal
-                videoStream.style.display = "none";
-                absenBtn.style.display = "block";
-                absenBtn.disabled = false;
-                absenBtn.textContent = "Coba Lagi";
-
                 Swal.fire({
                     icon: "error",
                     title: "Gagal Mengakses Kamera",
@@ -356,7 +314,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             // matikan kamera biyar vidio mati dan tampilan normal lagi
             if (mati) {
                 let cekCamera = mati.getTracks();
-                cekCamera.forEach((track) => track.stop()); // stok kamera
+                cekCamera.forEach((track) => track.stop()); // stop kamera
                 videoStream.srcObject = null;
             }
 
