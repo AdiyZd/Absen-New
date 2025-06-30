@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 });
 
                 Swal.close();
-                await FotoAbsensiSkm(); // Panggil fungsi untuk membuka kamera
+                FotoAbsensiSkm(); // Panggil fungsi untuk membuka kamera
 
             } catch (error) {
                 Swal.fire({
