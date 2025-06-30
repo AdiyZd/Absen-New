@@ -12,70 +12,70 @@ document.addEventListener("DOMContentLoaded", async function () {
     let mati = null;
 
     // pengecekan lokasi
-    async function cekLokasi(tes) {
-        absenBtn.removeEventListener("click", cekLokasi);
-    
-        if (!tes) {
-            console.error("Elemen tombol absensi (tes) tidak ditemukan!");
+    async function cekLokasi() {
+        if (!absenBtn) {
+            console.warn("Elemen tombol absensi (tes) tidak ditemukan!");
             return;
         }
 
-        tes.addEventListener("click", async function (enev) {
-            enev.preventDefault(); // Mencegah reload atau default action
+        absenBtn.removeEventListener("click", handleAbsenClick);
+        absenBtn.addEventListener("click", handleAbsenClick);
 
-            try {
-                let dalamLokasi = await LokasiSaya();
+        async function handleAbsenClick(event) {
+            event.preventDefault(); // Menghilangkan fungsi default pada tombol/link
+                try {
+                    let dalamLokasi = await LokasiSaya();
 
-                if (!dalamLokasi) {
+                    if (!dalamLokasi) {
+                        Swal.fire({
+                            icon: "warning",
+                            title: "Lokasi Tidak Sesuai",
+                            text: "Kamu berada di luar area yang diizinkan.",
+                        });
+                        return;
+                    }
+
                     Swal.fire({
-                        icon: "warning",
-                        title: "Lokasi Tidak Sesuai",
-                        text: "Kamu berada di luar area yang diizinkan.",
+                        title: "Menyiapkan Kamera",
+                        text: "Mohon tunggu sebentar",
+                        imageUrl: "./img/load-pag.gif",
+                        imageWidth: 150,
+                        imageHeight: 150,
+                        allowOutsideClick: false,
+                        didOpen: () => Swal.showLoading(),
+                        timer: 3000,
+                        timerProgressBar: true,
+                    }).then(async () => {
+                        const videoStream = document.getElementById("videoStream");
+                        const foto = document.getElementById("foto");
+                        const absenBtn = document.getElementById("absenBtn");
+
+                        videoStream.style.display = "block";
+                        foto.style.display = "block";
+                        absenBtn.style.display = "none";
+
+                        const streamKamera = await navigator.mediaDevices.getUserMedia({
+                            video: {
+                                width: { ideal: 1280 },
+                                height: { ideal: 720 },
+                                facingMode: "user",
+                            },
+                        });
+
+                        videoStream.srcObject = streamKamera;
+                        videoStream.play();
+
+                        absenBtn.disabled = true;
+                        absenBtn.innerText = "Kamera Aktif";
                     });
-                    return;
-                }
-
-                Swal.fire({
-                    title: "Menyiapkan Kamera",
-                    text: "Mohon tunggu sebentar",
-                    imageUrl: "./img/load-pag.gif",
-                    imageWidth: 150,
-                    imageHeight: 150,
-                    allowOutsideClick: false,
-                    didOpen: () => Swal.showLoading(),
-                    timer: 3000,
-                    timerProgressBar: true,
-                }).then(async () => {
-                    const videoStream = document.getElementById("videoStream");
-                    const foto = document.getElementById("foto");
-                    const absenBtn = document.getElementById("absenBtn");
-
-                    videoStream.style.display = "block";
-                    foto.style.display = "block";
-                    absenBtn.style.display = "none";
-
-                    const streamKamera = await navigator.mediaDevices.getUserMedia({
-                        video: {
-                            width: { ideal: 1280 },
-                            height: { ideal: 720 },
-                            facingMode: "user",
-                        },
-                    });
-
-                    videoStream.srcObject = streamKamera;
-                    videoStream.play();
-
-                    absenBtn.disabled = true;
-                    absenBtn.innerText = "Kamera Aktif";
-                });
-            } catch (error) {
+                } catch (error) {
                 Swal.fire({
                     icon: "error",
                     title: "Error",
                     text: `Terjadi kesalahan: ${error.message}`,
                 });
             }
-        });
+        };
 
         async function LokasiSaya() {
             return new Promise((resolve, reject) => {
