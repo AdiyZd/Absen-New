@@ -63,9 +63,10 @@ document.addEventListener("DOMContentLoaded", async function () {
     async function userNameSiswa() {
         let namaUsernameYangTerdagtar = [
             "Agus Adi Purnomo",
-            "Choirunn Nisa",
-            "Nabila Eka Ayu Saputri",
-            "Lailita Al Hikmah",
+            "Admin",
+            "Fitra Raveli Suhardi",
+            "Meyda Ariyani"
+
         ];
 
         const { value: nama } = await Swal.fire({

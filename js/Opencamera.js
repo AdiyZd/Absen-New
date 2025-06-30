@@ -75,9 +75,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     let namaUsernameYangTerdagtar = [
         "Admin Web",
         "Agus Adi Purnomo",
-        "Choirunn Nisa",
-        "Nabila Eka Ayu Saputri",
-        "Lailita Al Hikmah",
+        "Admin",
+        "Fitra Raveli Suhardi",
+        "Meyda Ariyani"
     ];
     // minta acces ke admin
 
