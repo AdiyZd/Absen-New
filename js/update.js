@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const namaBorder = document.getElementById("nama");
     const absenBtn = document.getElementById("absenBtn");
     const WaktuLoBro = document.getElementById("timerNavigasi");
-    const videoStream = document.getElementById("stream");
+    let videoStream = document.getElementById("stream");
     const foto = document.getElementById("ambilFoto");
     const send = document.getElementById("kirim");
     const ulangFoto = document.getElementById("restart");
@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                         return;
                     }
 
-                    Swal.fire({
+                    await Swal.fire({
                         title: "Menyiapkan Kamera",
                         text: "Mohon tunggu sebentar",
                         imageUrl: "./img/load-pag.gif",
@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                         timer: 3000,
                         timerProgressBar: true,
                     }).then(async () => {
-                        const videoStream = document.getElementById("videoStream");
+                        // const videoStream = document.getElementById("videoStream");
                         const foto = document.getElementById("foto");
                         const absenBtn = document.getElementById("absenBtn");
 
