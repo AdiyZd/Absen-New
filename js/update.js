@@ -49,8 +49,12 @@ document.addEventListener("DOMContentLoaded", async function () {
                     allowEscapeKey: false,
                 });
 
+                // START KAMERA
+                await startCamera()
+                
+                // TUTUP LOADING 
                 Swal.close();
-                FotoAbsensiSkm(); // Panggil fungsi untuk membuka kamera
+                FotoAbsensiSkm();
 
             } catch (error) {
                 Swal.fire({
@@ -61,6 +65,36 @@ document.addEventListener("DOMContentLoaded", async function () {
                         : error.message,
                     confirmButtonText: "Mengerti",
                 });
+            }
+        }
+        
+        // update code ini 
+        async function startCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: {
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 },
+                        facingMode: "user"
+                    }
+                });
+
+                mati = stream 
+                videoStream.srcObject = stream;
+                videoStream.play();
+                videoStream.style.display = 'block'
+
+                // Matikan tombol absensi jika kamera telah nyala
+                absenBtn.disabled = true;
+                absenBtn.innerText = "Kamera Aktif";
+
+                return true;
+            } catch (error) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Gagal Mengakses Kamera",
+                    text: {error}
+                })
             }
         }
 
