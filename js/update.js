@@ -1,3 +1,5 @@
+const { footer } = require("motion/react-client");
+
 document.addEventListener("DOMContentLoaded", async function () {
     //DATA
     const namaBorder = document.getElementById("nama");
@@ -49,12 +51,14 @@ document.addEventListener("DOMContentLoaded", async function () {
                     allowEscapeKey: false,
                 });
 
-                // START KAMERA
-                await startCamera()
+                const cameraStendbay = await startCamera()
                 
-                // TUTUP LOADING 
-                Swal.close();
-                FotoAbsensiSkm();
+                if (cameraStendbay) {
+                    setupCameraUi();
+                    Swal.close();
+                } else {
+                    throw new Error("Gagal Memulai kamera!")
+                }
 
             } catch (error) {
                 Swal.fire({
@@ -81,22 +85,91 @@ document.addEventListener("DOMContentLoaded", async function () {
 
                 mati = stream 
                 videoStream.srcObject = stream;
+                
+                await new Promise((resolve) => {
+                    videoStream.onloadedmetadata = resolve;
+                });
+                
                 videoStream.play();
                 videoStream.style.display = 'block'
-
                 // Matikan tombol absensi jika kamera telah nyala
                 absenBtn.disabled = true;
-                absenBtn.innerText = "Kamera Aktif";
 
                 return true;
             } catch (error) {
+                console.warn("Camera Error: ", error)
                 Swal.fire({
                     icon: "error",
                     title: "Gagal Mengakses Kamera",
-                    text: {error}
+                    text: error.message
                 })
-            }
+                return false;
+            };
+        };
+
+        function setupCameraUi() {
+            // ambil foto button
+            foto.style.display = 'block';
+            foto.disabled = false;
+            
+            // disable button lain 
+            send.style.display = 'none';
+            ulangFoto.style.display = 'none';
+            priviu.style.display = 'none';
+
+            absenBtn.disabled = true;
+            setupController();
         }
+
+        // controler
+        function setupController() {
+            foto.addEventListener('click', captureFoto)
+            ulangFoto.addEventListener('click', restartFoto)
+            send.addEventListener('click', sendAdmin)
+        }
+
+        async function captureFoto() {
+            if (!videoStream.srcObject) {
+                console.log("kamera belum aktif")
+                Swal.fire({
+                    icon: "error",
+                    text: "Kamera Belum Aktif Silahkan Aktifkan kamera untuk absensi!",
+                    footer: "<a href='chrome://settings/content' target='_blank'>Buka Pengaturan Izin</a>"
+                });
+                return;
+            }
+
+            priviu.width = videoStream.videoWidth;
+            priviu.height = videoStream.videoHeight;
+
+            context.save()
+            context.scale(-1, 1)
+            context.drawImage(videoStream, -priviu.width, 0, priviu.width, priviu.height)
+            context.restore();
+
+            // ui update
+            videoStream.style.display = 'none';
+            foto.style.display = 'none';
+            priviu.style.display = 'block';
+            send.style.display = 'inline-block';
+            ulangFoto.style.display = 'inline-block';
+        }
+
+        // restart foto
+      async function restartFoto() {
+            if (!mati) {
+                mati.getTracks().forEach(track => track.stop());    
+            }
+
+            await startCamera();
+            setupCameraUi();
+
+        }
+
+    // kirim absensi 
+    async function sendAdmin() {
+        console.log("belum di coding bang line: 170")        
+    }
 
         async function LokasiSaya() {
             return new Promise((resolve, reject) => {
@@ -320,146 +393,4 @@ document.addEventListener("DOMContentLoaded", async function () {
     namaBorder.innerText = nama;
     namaBorder.style.color = "rgb(4, 4, 248)";
     cekLokasi();
-
-    // Buka Foto
-    function FotoAbsensiSkm() {
-        foto.addEventListener("click", function () {
-            if (!videoStream.srcObject) {
-                console.log("Kamera belum aktif");
-                return;
-            }
-
-            // ukuran foto
-            priviu.width = videoStream.videoWidth;
-            priviu.height = videoStream.videoHeight;
-
-            // frem vidio
-            context.save();
-            context.scale(-1, 1);
-            context.drawImage(
-                videoStream,
-                -priviu.width,
-                0,
-                priviu.width,
-                priviu.height
-            );
-            context.restore();
-
-            // matikan kamera biyar vidio mati dan tampilan normal lagi
-            if (mati) {
-                let cekCamera = mati.getTracks();
-                cekCamera.forEach((track) => track.stop()); // stop kamera
-                videoStream.srcObject = null;
-            }
-
-            // matikan vidio dan tombol ambil foto
-            videoStream.style.display = "none";
-            foto.style.display = "none";
-            // send telegram
-            send.style.display = "inline-block";
-            ulangFoto.style.display = "inline-block";
-
-            priviu.style.display = "block";
-        });
-
-        // ulang foto
-        ulangFoto.addEventListener("click", async function () {
-            // matikan priviu lalu nyalakan lagi vidio
-            priviu.style.display = "none";
-            videoStream.style.display = "block";
-
-            foto.style.display = "block";
-            send.style.display = "none";
-            ulangFoto.style.display = "none";
-            // nyalakan kamera
-            navigator.mediaDevices
-                .getUserMedia({
-                    video: {
-                        width: { ideal: 1280 },
-                        height: { ideal: 720 },
-                        facingMode: "user",
-                    },
-                })
-                .then((streamKamera) => {
-                    mati = streamKamera;
-                    videoStream.srcObject = streamKamera;
-                    videoStream.play();
-
-                    // Disable tombol setelah kamera aktif
-                    absenBtn.disabled = true;
-                    absenBtn.innerText = "Kamera Aktif";
-                })
-                .catch((error) => {
-                    console.error("Akses Kamera Ditolak: ", error);
-                    videoStream.style.display = "none";
-                    Swal.fire({
-                        icon: "error",
-                        title: "Akses Kamera Ditolak",
-                        text: "Mohon izinkan akses kamera untuk melakukan absen",
-                        draggable: true,
-                    });
-                });
-        });
-
-        // kirim absen
-        send.addEventListener("click", async function () {
-            const imageData = priviu.toDataURL("image/jpeg");
-
-            // original text
-            let originalText = send.innerText;
-
-            // animasi loading
-            send.innerHTML = `<div id="Loading" class="loader"></div>`;
-            send.disabled = true;
-
-            const id = "7355777672";
-            const apiTelegramBot = "7079092015:AAFOhQM0L0PGWmKcfW2DULtjo0KHzBEHbz8";
-
-            // blob konverst
-            let blob = await fetch(imageData).then((res) => res.blob());
-            let formData = new FormData();
-            formData.append("chat_id", id);
-            formData.append("photo", blob, "absen.jpg");
-            formData.append(
-                "caption",
-                `Absen: ✅ \n Nama: ${nama} \n Hari: ${hari} \n Tanggal: ${tanggal} \n Jam: ${jam} \n Menit: ${menit}:${Detik} \n Bulan: ${bulan} \n Tahun: ${tahun}`
-            );
-
-            // kirim
-            try {
-                let response = await fetch(
-                    `https://api.telegram.org/bot${apiTelegramBot}/sendPhoto`,
-                    {
-                        method: "POST",
-                        body: formData,
-                    }
-                );
-
-                let hasil = await response.json();
-
-                if (hasil.ok) {
-                    Swal.fire({
-                        icon: "success",
-                        title: "Berhasil",
-                        text: "Absen berhasil dikirim",
-                        draggable: true,
-                    });
-                } else {
-                    throw new Error(hasil.description);
-                }
-            } catch (error) {
-                // debuging nyalakan jika gak bisa kirim
-                // console.error("Error: ", error);
-                Swal.fire({
-                    icon: "error",
-                    title: "Gagal mengirim",
-                    text: `Error terjadi di Error: ${error.message}`,
-                    draggable: true,
-                });
-            } finally {
-                send.innerHTML = originalText;
-                send.disabled = false;
-            }
-        });
-    }
 });
