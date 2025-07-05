@@ -49,6 +49,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     allowEscapeKey: false,
                 });
 
+                absenBtn.style.display = 'none';
                 const cameraStendbay = await startCamera()
 
                 if (cameraStendbay) {
