@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 });
 
                 const cameraStendbay = await startCamera()
-                
+
                 if (cameraStendbay) {
                     setupCameraUi();
                     Swal.close();
@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 });
             }
         }
-        
+
         // update code ini 
         async function startCamera() {
             try {
@@ -83,13 +83,13 @@ document.addEventListener("DOMContentLoaded", async function () {
                     }
                 });
 
-                mati = stream 
+                mati = stream
                 videoStream.srcObject = stream;
-                
+
                 await new Promise((resolve) => {
                     videoStream.onloadedmetadata = resolve;
                 });
-                
+
                 videoStream.play();
                 videoStream.style.display = 'block'
                 // Matikan tombol absensi jika kamera telah nyala
@@ -111,7 +111,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             // ambil foto button
             foto.style.display = 'block';
             foto.disabled = false;
-            
+
             // disable button lain 
             send.style.display = 'none';
             ulangFoto.style.display = 'none';
@@ -156,9 +156,9 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
 
         // restart foto
-      async function restartFoto() {
+        async function restartFoto() {
             if (!mati) {
-                mati.getTracks().forEach(track => track.stop());    
+                mati.getTracks().forEach(track => track.stop());
             }
 
             await startCamera();
@@ -166,10 +166,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         }
 
-    // kirim absensi 
-    async function sendAdmin() {
-        console.log("belum di coding bang line: 170")        
-    }
+        // kirim absensi 
+        async function sendAdmin() {
+            console.log("belum di coding bang line: 170")
+        }
 
         async function LokasiSaya() {
             return new Promise((resolve, reject) => {
