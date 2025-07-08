@@ -19,7 +19,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
 
         absenBtn.removeEventListener("click", handleAbsenClick);
-        absenBtn.addEventListener("click", handleAbsenClick);
 
         async function handleAbsenClick(event) {
             event.preventDefault();
