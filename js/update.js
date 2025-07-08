@@ -265,6 +265,11 @@ document.addEventListener("DOMContentLoaded", async function () {
                         Swal.fire({
                             icon: "success",
                             title: "Absensi Berhasil Dikirim",
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            allowEnterKey: true,
+                            showCancelButton: false,
+                            confirmButtonText: "OK",
                             showClass: {
                                 popup: `
                                 animate__animated
@@ -285,6 +290,11 @@ document.addEventListener("DOMContentLoaded", async function () {
                             icon: "warning",
                             title: "Error",
                             text: JSON.stringify(hasil),
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            allowEnterKey: true,
+                            showCancelButton: false,
+                            confirmButtonText: "OK",
                             showClass: {
                                 popup: `
                                 animate__animated
