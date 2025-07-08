@@ -1,5 +1,3 @@
-const { title } = require("motion/react-client");
-
 document.addEventListener("DOMContentLoaded", async function () {
     //DATA
     const namaBorder = document.getElementById("nama");
