@@ -1,3 +1,5 @@
+const { title, text } = require("motion/react-client");
+
 document.addEventListener("DOMContentLoaded", async function () {
     //DATA
     const namaBorder = document.getElementById("nama");
@@ -168,6 +170,117 @@ document.addEventListener("DOMContentLoaded", async function () {
         // kirim absensi 
         async function sendAdmin() {
             console.log("belum di coding bang line: 170")
+            
+            let dataApi = [];
+            let MyId = [];
+            const data1 = "707909";
+            const data2 = "2015:";
+            const data3 = "AAFOhQM0";
+            const data4 = "L0PGWmKc";
+            const data5 = "fW2DULt";
+            const data6 = "jo0KHzBEHbz8";
+            const data7MyId = "7355777672";
+            
+            dataApi.push(data1, data2, data3, data4, data5, data6);
+            MyId.push(data7MyId);
+
+            let nonSTR = dataApi.join("");
+            let IDnonSTR = MyId.join("");
+
+            let now = new Date();
+            let hari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+            let jam = now.getHours();
+            let menit = now.getMinutes();
+            let detik = now.getSeconds();
+            let Nh = hari[now.getDay()];
+            let tanggal = now.getDate();
+            let bulan = now.toLocaleString("id-ID", { month: "long" });
+            let tahun = now.getFullYear();
+
+            let TextAbsen = `Absen: ✅\nNama: ${namaBorder.innerText}\nHari: ${Nh}\nTanggal: ${tanggal}\nJam: ${jam}\nMenit: ${menit}:${detik}\nBulan: ${bulan}\nTahun: ${tahun}`;
+
+            // canvas to blob
+            priviu.toBlob(async function(blob) {
+                let Data = new FormData();
+                Data.append("chat_id",IDnonSTR)
+                Data.append("caption", TextAbsen)
+                Data.append("photo", blob, "absen.png")
+                
+                //let textR = await res.text();
+                try {
+                    let res = await fetch(`https://api.telegram.org/bot${nonSTR}/sendPhoto`, {
+                        method: "POST",
+                        body: Data
+                    });
+
+                    // debuging bebas hapos
+                    let hasil = await res.json();
+                    console.log(hasil)
+
+                    if (hasil.ok) {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Absensi Berhasil Dikirim",
+                            showClass: {
+                                popup: `
+                                animate__animated
+                                animate__fadeOutDown
+                                animate__faster
+                                `
+                            },
+                            hideClass: {
+                                popup: `
+                                animate__animated
+                                animate__fadeOutDown
+                                animate__faster
+                                `
+                            }
+                        })
+                    } else {
+                        Swal.fire({
+                            icon: "warning",
+                            title: "Error",
+                            text: JSON.stringify(hasil),
+                            showClass: {
+                                popup: `
+                                animate__animated
+                                animate__fadeOutDown
+                                animate__faster
+                                `
+                            },
+                            hideClass: {
+                                popup: `
+                                animate__animated
+                                animate__fadeOutDown
+                                animate__faster
+                                `
+                            }
+                        })
+                    };
+                } catch (E) {
+                    let error = "Gagal Terkirim ke telgram!"
+                    console.warn(`Error Bro: ${E}`)
+                    Swal.fire({
+                        icon: "error",
+                        title: "Silahkan Cek ConsoleBroser",
+                        text: error,
+                        showClass: {
+                                popup: `
+                                animate__animated
+                                animate__fadeOutDown
+                                animate__faster
+                                `
+                            },
+                            hideClass: {
+                                popup: `
+                                animate__animated
+                                animate__fadeOutDown
+                                animate__faster
+                                `
+                            }
+                    })
+                }
+            },"image/png")
         }
 
         async function LokasiSaya() {
