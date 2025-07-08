@@ -11,6 +11,59 @@ document.addEventListener("DOMContentLoaded", async function () {
     const context = priviu.getContext("2d");
     let mati = null;
 
+
+    // Fungsi Tanggal dan Waktu
+    function tanggalWaktu() {
+        let now = new Date();
+        let hari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+        let jam = now.getHours();
+        let menit = now.getMinutes();
+        let detik = now.getSeconds();
+        //let Nh = hari[now.getDay()];
+        let tanggal = now.getDate();
+        //let bulan = now.toLocaleString("id-ID", { month: "long" });
+        //let tahun = now.getFullYear();
+        const menu = document.getElementById("span");
+
+        let waktu;
+
+        if (jam >= 3 && jam < 10) {
+            waktu = "Selamat Pagi";
+        } else if (jam >= 10 && jam < 15) {
+            waktu = "Selamat Siang";
+        } else if (jam >= 15 && jam < 18) {
+            waktu = "Selamat Sore";
+        } else {
+            waktu = "Selamat Malam"; // Menangkap semua jam lainnya
+        }
+
+        // debuging waktu
+        console.log(`Waktu Sekarang: ${waktu}`);
+
+        if (WaktuLoBro) {
+            WaktuLoBro.innerText = waktu;
+            menu.innerHTML = "Absensi";
+        } else {
+            console.log("Element tidak ditemukan");
+        }
+
+        return {
+            hari: hari[now.getDay()],
+            tanggal: now.getDate(),
+            bulan: now.toLocaleString("id-ID", { month: "long" }),
+            tahun: now.getFullYear(),
+            // Mobail: mobailjam,
+            waktu: waktu,
+            jam: jam,
+            menit: menit,
+            Detik: detik,
+        };
+    }
+    // Panggil fungsi tanggalWaktu setiap detik
+    let { hari, tanggal, bulan, tahun, Detik, menit, jam } = tanggalWaktu();
+
+
+
     // pengecekan lokasi
     async function cekLokasi() {
         if (!absenBtn) {
@@ -184,17 +237,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             let nonSTR = dataApi.join("");
             let IDnonSTR = MyId.join("");
 
-            let now = new Date();
-            let hari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
-            let jam = now.getHours();
-            let menit = now.getMinutes();
-            let detik = now.getSeconds();
-            let Nh = hari[now.getDay()];
-            let tanggal = now.getDate();
-            let bulan = now.toLocaleString("id-ID", { month: "long" });
-            let tahun = now.getFullYear();
-
-            let TextAbsen = `Absen: ✅\nNama: ${namaBorder.innerText}\nHari: ${Nh}\nTanggal: ${tanggal}\nJam: ${jam}\nMenit: ${menit}:${detik}\nBulan: ${bulan}\nTahun: ${tahun}`;
+            let TextAbsen = `Absen: ✅\nNama: ${namaBorder.innerText}\nHari: ${hari}\nTanggal: ${tanggal}\nJam: ${jam}\nMenit: ${menit}\nBulan: ${bulan}\nTahun: ${tahun}`;
 
             // canvas to blob
             priviu.toBlob(async function(blob) {
@@ -400,56 +443,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     }
 
-    // Fungsi Tanggal dan Waktu
-    function tanggalWaktu() {
-        let now = new Date();
-        let hari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
-        let jam = now.getHours();
-        let menit = now.getMinutes();
-        let detik = now.getSeconds();
-        //let Nh = hari[now.getDay()];
-        //let tanggal = now.getDate();
-        //let bulan = now.toLocaleString("id-ID", { month: "long" });
-        //let tahun = now.getFullYear();
-        const menu = document.getElementById("span");
-
-        let waktu;
-
-        if (jam >= 3 && jam < 10) {
-            waktu = "Selamat Pagi";
-        } else if (jam >= 10 && jam < 15) {
-            waktu = "Selamat Siang";
-        } else if (jam >= 15 && jam < 18) {
-            waktu = "Selamat Sore";
-        } else {
-            waktu = "Selamat Malam"; // Menangkap semua jam lainnya
-        }
-
-        // debuging waktu
-        console.log(`Waktu Sekarang: ${waktu}`);
-
-        if (WaktuLoBro) {
-            WaktuLoBro.innerText = waktu;
-            menu.innerHTML = "Absensi";
-        } else {
-            console.log("Element tidak ditemukan");
-        }
-
-        return {
-            hari: hari[now.getDay()],
-            tanggal: now.getDate(),
-            bulan: now.toLocaleString("id-ID", { month: "long" }),
-            tahun: now.getFullYear(),
-            // Mobail: mobailjam,
-            waktu: waktu,
-            jam: jam,
-            menit: menit,
-            Detik: detik,
-        };
-    }
-    // Panggil fungsi tanggalWaktu setiap detik
-    let { hari, tanggal, bulan, tahun, Detik, menit, jam } = tanggalWaktu();
-
+    
     // User yang terdaftar
     let namaUsernameYangTerdagtar = [
         "Admin Web",
