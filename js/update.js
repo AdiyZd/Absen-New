@@ -1,3 +1,5 @@
+const { title } = require("motion/react-client");
+
 document.addEventListener("DOMContentLoaded", async function () {
     //DATA
     const namaBorder = document.getElementById("nama");
@@ -223,7 +225,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         // kirim absensi 
         async function sendAdmin() {
-            console.log("belum di coding bang line: 170")
             
             let dataApi = [];
             let MyId = [];
@@ -243,6 +244,17 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             let TextAbsen = `Absen: ✅\nNama: ${namaBorder.innerText}\nHari: ${hari}\nTanggal: ${tanggal}\nJam: ${jam}\nMenit: ${menit}\nBulan: ${bulan}\nTahun: ${tahun}`;
 
+            Swal.fire({
+                title: "Mengirim Absensi",
+                text: "Silahkan Tunggu Sebentar!",
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                },
+                showCancelButton: false
+            });
+
             // canvas to blob
             priviu.toBlob(async function(blob) {
                 let Data = new FormData();
@@ -260,6 +272,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                     // debuging bebas hapos
                     let hasil = await res.json();
                     console.log(hasil)
+                    
+                    // tutup animasi loading 
+                    Swal.close();
 
                     if (hasil.ok) {
                         Swal.fire({
@@ -311,6 +326,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                             }
                         })
                     };
+                    
                 } catch (E) {
                     let error = "Gagal Terkirim ke telgram!"
                     console.warn(`Error Bro: ${E}`)
