@@ -273,7 +273,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                             showClass: {
                                 popup: `
                                 animate__animated
-                                animate__fadeOutDown
+                                animate__fadeInDown
                                 animate__faster
                                 `
                             },
@@ -298,7 +298,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                             showClass: {
                                 popup: `
                                 animate__animated
-                                animate__fadeOutDown
+                                animate__fadeInDown
                                 animate__faster
                                 `
                             },
