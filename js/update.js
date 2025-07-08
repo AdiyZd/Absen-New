@@ -255,6 +255,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 showCancelButton: false
             });
 
+            await new Promise(resolve => setTimeout(resolve, 200))
+
             // canvas to blob
             priviu.toBlob(async function(blob) {
                 let Data = new FormData();
