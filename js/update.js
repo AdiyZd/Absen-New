@@ -71,7 +71,9 @@ document.addEventListener("DOMContentLoaded", async function () {
             return;
         }
 
-        absenBtn.removeEventListener("click", handleAbsenClick);
+        // absenBtn.removeEventListener("click", handleAbsenClick);
+        // absenBtn.addEventListener("click", handleAbsenClick);
+
 
         async function handleAbsenClick(event) {
             event.preventDefault();
@@ -122,6 +124,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 });
             }
         }
+
+        absenBtn.addEventListener("click", handleAbsenClick)
 
         // update code ini 
         async function startCamera() {
