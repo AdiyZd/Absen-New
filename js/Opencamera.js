@@ -249,8 +249,8 @@ document.addEventListener("DOMContentLoaded", async function () {
         send.innerHTML = `<div id="Loading" class="loader"></div>`;
         send.disabled = true;
 
-        const id = "7355777672";
-        const apiTelegramBot = "7079092015:AAFOhQM0L0PGWmKcfW2DULtjo0KHzBEHbz8";
+        const id = "";
+        const apiTelegramBot = "";
 
         // blob konverst
         let blob = await fetch(imageData).then((res) => res.blob());
